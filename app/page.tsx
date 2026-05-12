@@ -1,69 +1,67 @@
-import { ModelExplorer } from "@/components/ModelExplorer";
-import { Layers } from "lucide-react";
+const models = [
+  { name: "GPT-4o", provider: "OpenAI", inputPrice: 2.50, outputPrice: 10.00, context: "128K", speed: "Fast", useCase: "通用/Coding" },
+  { name: "GPT-4o mini", provider: "OpenAI", inputPrice: 0.15, outputPrice: 0.60, context: "128K", speed: "Fast", useCase: "轻量任务" },
+  { name: "Claude 3.5 Sonnet", provider: "Anthropic", inputPrice: 3.00, outputPrice: 15.00, context: "200K", speed: "Fast", useCase: "复杂任务" },
+  { name: "Gemini 1.5 Pro", provider: "Google", inputPrice: 1.25, outputPrice: 5.00, context: "2M", speed: "Fast", useCase: "长上下文" },
+  { name: "Gemini 1.5 Flash", provider: "Google", inputPrice: 0.075, outputPrice: 0.30, context: "1M", speed: "Fast", useCase: "快速响应" },
+  { name: "DeepSeek V3", provider: "DeepSeek", inputPrice: 0.14, outputPrice: 0.28, context: "128K", speed: "Fast", useCase: "性价比之王" },
+  { name: "Llama 3.3 70B", provider: "Groq", inputPrice: 0.70, outputPrice: 0.80, context: "128K", speed: "Very Fast", useCase: "实时应用" },
+];
+
+const getBlendedPrice = (model: { inputPrice: number; outputPrice: number }) => {
+  return (model.inputPrice + model.outputPrice) / 2;
+};
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 grid-bg opacity-[0.65]" />
-      <div className="pointer-events-none absolute -left-40 top-24 h-[420px] w-[420px] glow-orb" />
-      <div className="pointer-events-none absolute -right-32 top-[40%] h-[380px] w-[380px] glow-orb opacity-70" />
-
-      <header className="relative border-b border-white/[0.06] bg-[#0a0a0f]/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-          <a href="/" className="flex items-center gap-2.5">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/25 ring-1 ring-white/10">
-              <Layers className="size-5 text-white" aria-hidden />
-            </span>
-            <span className="font-display text-lg font-semibold tracking-tight">
-              Benchplane
-            </span>
-          </a>
-          <nav className="flex items-center gap-3 text-sm">
-            <span className="hidden text-zinc-500 sm:inline">
-              API pricing at a glance
-            </span>
-            <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-400/20">
-              Sample rates
-            </span>
-          </nav>
+    <div className="min-h-screen bg-black text-white">
+      <header className="border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+            AI Token Compare
+          </h1>
+          <p className="text-gray-400 mt-1">对比 AI 模型价格，找到最划算的选择</p>
         </div>
       </header>
 
-      <main className="relative">
-        <section className="mx-auto max-w-6xl px-4 pb-2 pt-14 sm:px-6 sm:pt-20 lg:px-8">
-          <p className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-xs font-medium text-indigo-200/90 ring-1 ring-indigo-500/15">
-            Compare tokens, not hype
-          </p>
-          <h1 className="font-display mt-5 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight text-white sm:text-5xl">
-            Pick the right model{" "}
-            <span className="bg-gradient-to-r from-indigo-300 to-violet-300 bg-clip-text text-transparent">
-              without spreadsheet fatigue
-            </span>
-            .
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
-            Search across providers, sort by the cheapest blended rate, and
-            compare input versus output pricing side by side — optimized for
-            phones and wide monitors alike.
-          </p>
-        </section>
-
-        <ModelExplorer />
-      </main>
-
-      <footer className="relative mt-8 border-t border-white/[0.06] py-10">
-        <div className="mx-auto max-w-6xl px-4 text-center text-xs leading-relaxed text-zinc-600 sm:px-6 lg:px-8">
-          <p>
-            Figures are illustrative examples for UI demo purposes. Always
-            confirm current rates on each provider&apos;s billing page before
-            you ship to production.
-          </p>
-          <p className="mt-2 text-zinc-700">
-            © {new Date().getFullYear()} Benchplane. Built with Next.js &
-            Tailwind CSS.
-          </p>
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-800 border-b border-gray-700">
+                <tr className="text-left text-gray-300 text-sm">
+                  <th className="px-4 py-3">模型</th>
+                  <th className="px-4 py-3">提供商</th>
+                  <th className="px-4 py-3">输入 ($/M)</th>
+                  <th className="px-4 py-3">输出 ($/M)</th>
+                  <th className="px-4 py-3">混合价</th>
+                  <th className="px-4 py-3">上下文</th>
+                  <th className="px-4 py-3">速度</th>
+                  <th className="px-4 py-3">推荐用途</th>
+                </tr>
+              </thead>
+              <tbody>
+                {models.map((model, idx) => (
+                  <tr key={idx} className="border-b border-gray-800 hover:bg-gray-800 transition">
+                    <td className="px-4 py-3 font-medium text-white">{model.name}</td>
+                    <td className="px-4 py-3 text-gray-300">{model.provider}</td>
+                    <td className="px-4 py-3 text-green-400">${model.inputPrice.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-yellow-400">${model.outputPrice.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-blue-400">${getBlendedPrice(model).toFixed(2)}</td>
+                    <td className="px-4 py-3 text-gray-300">{model.context}</td>
+                    <td className="px-4 py-3">
+                      <span className="px-2 py-1 rounded text-xs bg-blue-500/20 text-blue-400">
+                        {model.speed}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-gray-300">{model.useCase}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </footer>
+      </main>
     </div>
   );
 }
