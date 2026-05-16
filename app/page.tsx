@@ -752,8 +752,12 @@ export default function Home() {
 
                          {/* 智能推荐引擎 */}
         <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
-          <h2 className="text-xl font-semibold mb-4 text-center">🤖 根据你的需求，智能推荐</h2>
-          <p className={`text-sm text-center mb-6 ${theme.muted}`}>选择你的首要需求，我们帮你找到最合适的模型</p>
+          <h2 className="text-xl font-semibold mb-4 text-center">
+  🤖 {lang === "zh" ? "根据你的需求，智能推荐" : "Smart Recommendations Based on Your Needs"}
+</h2>
+<p className={`text-sm text-center mb-6 ${theme.muted}`}>
+  {lang === "zh" ? "选择你的首要需求，我们帮你找到最合适的模型" : "Select your priority, we'll find the best model for you"}
+</p>
           
           <div className="flex flex-wrap justify-center gap-3 mb-8">
             <button
