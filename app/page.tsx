@@ -926,19 +926,3 @@ export default function Home() {
                       </td>
                     </tr>
                   ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className={`mt-6 text-center text-xs ${theme.footer}`}>
-          {t.footerPriceUnit} · {t.footerUpdated}
-          {updateDate}
-          {lastRefresh &&
-            ` · ${t.footerSimRefresh}${formatDateTime(lastRefresh, lang)}`}
-        </div>
-      </main>
-    </div>
-  );
-}
