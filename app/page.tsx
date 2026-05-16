@@ -730,6 +730,74 @@ export default function Home() {
               <div className={`text-xs mt-1 ${theme.muted}`}>Price trends & cost calculator</div>
             </div>
           </div>
+
+                  {/* 智能推荐引擎 */}
+        <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
+          <h2 className="text-xl font-semibold mb-4 text-center">🤖 根据你的需求，智能推荐</h2>
+          <p className={`text-sm text-center mb-6 ${theme.muted}`}>选择你的首要需求，我们帮你找到最合适的模型</p>
+          
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            <button
+              onClick={() => {/* 待实现：点击后筛选显示最便宜的模型 */}}
+              className="px-4 py-2 rounded-full bg-green-500/10 text-green-500 border border-green-500/20 hover:bg-green-500/20 transition text-sm font-medium"
+            >
+              💰 最便宜
+            </button>
+            <button
+              onClick={() => {/* 待实现：点击后筛选显示速度最快的模型 */}}
+              className="px-4 py-2 rounded-full bg-blue-500/10 text-blue-500 border border-blue-500/20 hover:bg-blue-500/20 transition text-sm font-medium"
+            >
+              ⚡ 最快速度
+            </button>
+            <button
+              onClick={() => {/* 待实现：点击后筛选显示最适合编程的模型 */}}
+              className="px-4 py-2 rounded-full bg-purple-500/10 text-purple-500 border border-purple-500/20 hover:bg-purple-500/20 transition text-sm font-medium"
+            >
+              🧠 最佳编程
+            </button>
+            <button
+              onClick={() => {/* 待实现：点击后筛选显示上下文最长的模型 */}}
+              className="px-4 py-2 rounded-full bg-orange-500/10 text-orange-500 border border-orange-500/20 hover:bg-orange-500/20 transition text-sm font-medium"
+            >
+              📚 最长上下文
+            </button>
+          </div>
+
+          {/* 默认推荐卡片 - 最便宜 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-4 rounded-lg bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">🏆</span>
+                <span className="font-bold text-green-500">Top Pick: 最便宜</span>
+              </div>
+              <div className="text-xl font-semibold">Gemini 1.5 Flash</div>
+              <div className={`text-sm ${theme.muted}`}>Google</div>
+              <div className="mt-2 flex gap-3 text-sm">
+                <span className="text-green-500">输入: $0.075/M</span>
+                <span className="text-yellow-500">输出: $0.30/M</span>
+              </div>
+              <div className={`text-xs mt-2 ${theme.muted}`}>💰 性价比之王，适合大规模、成本敏感的应用</div>
+            </div>
+            <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">🥈</span>
+                <span className="font-bold text-blue-500">Runner Up</span>
+              </div>
+              <div className="text-xl font-semibold">DeepSeek V3</div>
+              <div className={`text-sm ${theme.muted}`}>DeepSeek</div>
+              <div className="mt-2 flex gap-3 text-sm">
+                <span className="text-green-500">输入: $0.14/M</span>
+                <span className="text-yellow-500">输出: $0.28/M</span>
+              </div>
+              <div className={`text-xs mt-2 ${theme.muted}`}>📈 极低的输入成本，强大的通用能力</div>
+            </div>
+          </div>
+          
+          <p className={`text-center text-xs ${theme.muted} mt-6`}>
+            点击上方按钮，查看更多针对性推荐 🚀
+          </p>
+        </div>
+          
         </div>
 
         <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
