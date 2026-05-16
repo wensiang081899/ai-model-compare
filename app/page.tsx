@@ -1,7 +1,16 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { Sun, Moon, Copy, Check, ExternalLink } from "lucide-react";
+import { useState, useCallback, useMemo } from "react";
+import {
+  Sun,
+  Moon,
+  Copy,
+  Check,
+  ExternalLink,
+  RefreshCw,
+  Calculator,
+  Search,
+} from "lucide-react";
 
 type Model = {
   name: string;
@@ -14,8 +23,31 @@ type Model = {
   officialUrl: string;
 };
 
-const models: Model[] = [
-  // OpenAI 系列
+type PriceTrend = "up" | "down" | "flat";
+
+type LiveModel = Model & {
+  inputTrend: PriceTrend;
+  outputTrend: PriceTrend;
+  inputChangePct: number;
+  outputChangePct: number;
+};
+
+type UseCaseFilter =
+  | "all"
+  | "coding"
+  | "long-context"
+  | "value"
+  | "fast";
+
+const USE_CASE_OPTIONS: { value: UseCaseFilter; label: string }[] = [
+  { value: "all", label: "全部用途" },
+  { value: "coding", label: "编程 / Coding" },
+  { value: "long-context", label: "长上下文" },
+  { value: "value", label: "性价比" },
+  { value: "fast", label: "快速响应" },
+];
+
+const baseModels: Model[] = [
   {
     name: "GPT-5",
     provider: "OpenAI",
@@ -56,8 +88,6 @@ const models: Model[] = [
     useCase: "复杂推理",
     officialUrl: "https://openai.com",
   },
-
-  // Anthropic Claude 系列
   {
     name: "Claude 3.7 Sonnet",
     provider: "Anthropic",
@@ -88,8 +118,6 @@ const models: Model[] = [
     useCase: "高难度任务",
     officialUrl: "https://www.anthropic.com",
   },
-
-  // Google Gemini 系列
   {
     name: "Gemini 2.5 Pro",
     provider: "Google",
@@ -120,8 +148,6 @@ const models: Model[] = [
     useCase: "快速响应",
     officialUrl: "https://ai.google.dev",
   },
-
-  // DeepSeek
   {
     name: "DeepSeek V4",
     provider: "DeepSeek",
@@ -152,8 +178,6 @@ const models: Model[] = [
     useCase: "推理任务",
     officialUrl: "https://www.deepseek.com",
   },
-
-  // Meta Llama
   {
     name: "Llama 4",
     provider: "Meta",
@@ -184,8 +208,6 @@ const models: Model[] = [
     useCase: "超大模型",
     officialUrl: "https://www.together.ai",
   },
-
-  // 其他
   {
     name: "Mixtral 8x22B",
     provider: "Mistral",
@@ -221,9 +243,137 @@ function formatToday(): string {
   });
 }
 
+function formatDateTime(date: Date): string {
+  return date.toLocaleString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
+
+function parseContextToTokens(ctx: string): number {
+  const match = ctx.match(/^([\d.]+)(K|M)$/i);
+  if (!match) return 0;
+  const num = parseFloat(match[1]);
+  const unit = match[2].toUpperCase();
+  return unit === "M" ? num * 1_000_000 : num * 1_000;
+}
+
+function calcTrend(oldPrice: number, newPrice: number): {
+  trend: PriceTrend;
+  pct: number;
+} {
+  if (oldPrice === 0) return { trend: "flat", pct: 0 };
+  const pct = Math.round(((newPrice - oldPrice) / oldPrice) * 100);
+  if (pct < 0) return { trend: "down", pct: Math.abs(pct) };
+  if (pct > 0) return { trend: "up", pct };
+  return { trend: "flat", pct: 0 };
+}
+
+function jitterPrice(price: number): number {
+  const factor = 1 + (Math.random() * 0.1 - 0.05);
+  return Math.max(0.001, price * factor);
+}
+
+function seedInitialTrends(model: Model): LiveModel {
+  const inputJitter = jitterPrice(model.inputPrice);
+  const outputJitter = jitterPrice(model.outputPrice);
+  const inputTrend = calcTrend(model.inputPrice, inputJitter);
+  const outputTrend = calcTrend(model.outputPrice, outputJitter);
+  return {
+    ...model,
+    inputPrice: inputJitter,
+    outputPrice: outputJitter,
+    inputTrend: inputTrend.trend,
+    outputTrend: outputTrend.trend,
+    inputChangePct: inputTrend.pct,
+    outputChangePct: outputTrend.pct,
+  };
+}
+
+function matchesUseCaseFilter(model: Model, filter: UseCaseFilter): boolean {
+  if (filter === "all") return true;
+  const uc = model.useCase.toLowerCase();
+  switch (filter) {
+    case "coding":
+      return (
+        uc.includes("coding") ||
+        uc.includes("编程") ||
+        model.useCase.includes("Coding")
+      );
+    case "long-context":
+      return (
+        uc.includes("长上下文") ||
+        parseContextToTokens(model.context) >= 200_000
+      );
+    case "value":
+      return uc.includes("性价比");
+    case "fast":
+      return (
+        model.speed === "Very Fast" ||
+        model.speed === "Fast" ||
+        uc.includes("快速")
+      );
+    default:
+      return true;
+  }
+}
+
+function monthlyCost(
+  model: { inputPrice: number; outputPrice: number },
+  millionTokens: number
+): number {
+  const half = millionTokens / 2;
+  return half * model.inputPrice + half * model.outputPrice;
+}
+
+function PriceTrendBadge({
+  trend,
+  pct,
+}: {
+  trend: PriceTrend;
+  pct: number;
+}) {
+  if (trend === "down") {
+    return (
+      <span className="ml-1 text-xs text-green-500 font-medium whitespace-nowrap">
+        ↓{pct}%
+      </span>
+    );
+  }
+  if (trend === "up") {
+    return (
+      <span className="ml-1 text-xs text-red-500 font-medium whitespace-nowrap">
+        ↑{pct}%
+      </span>
+    );
+  }
+  return (
+    <span className="ml-1 text-xs text-gray-500 font-medium whitespace-nowrap">
+      -
+    </span>
+  );
+}
+
+function formatPrice(price: number): string {
+  if (price < 1) return price.toFixed(3);
+  return price.toFixed(2);
+}
+
 export default function Home() {
   const [isDark, setIsDark] = useState(true);
   const [copiedName, setCopiedName] = useState<string | null>(null);
+  const [liveModels, setLiveModels] = useState<LiveModel[]>(() =>
+    baseModels.map(seedInitialTrends)
+  );
+  const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [useCaseFilter, setUseCaseFilter] = useState<UseCaseFilter>("all");
+  const [monthlyUsageM, setMonthlyUsageM] = useState<string>("10");
+
   const updateDate = formatToday();
 
   const copyModelName = useCallback(async (name: string) => {
@@ -235,6 +385,55 @@ export default function Home() {
       /* clipboard unavailable */
     }
   }, []);
+
+  const refreshSimulatedPrices = useCallback(() => {
+    setLiveModels((prev) =>
+      prev.map((model) => {
+        const newInput = jitterPrice(model.inputPrice);
+        const newOutput = jitterPrice(model.outputPrice);
+        const inputTrend = calcTrend(model.inputPrice, newInput);
+        const outputTrend = calcTrend(model.outputPrice, newOutput);
+        return {
+          ...model,
+          inputPrice: newInput,
+          outputPrice: newOutput,
+          inputTrend: inputTrend.trend,
+          outputTrend: outputTrend.trend,
+          inputChangePct: inputTrend.pct,
+          outputChangePct: outputTrend.pct,
+        };
+      })
+    );
+    setLastRefresh(new Date());
+  }, []);
+
+  const filteredModels = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return liveModels.filter((model) => {
+      if (!matchesUseCaseFilter(model, useCaseFilter)) return false;
+      if (!q) return true;
+      return (
+        model.name.toLowerCase().includes(q) ||
+        model.provider.toLowerCase().includes(q) ||
+        model.useCase.toLowerCase().includes(q)
+      );
+    });
+  }, [liveModels, searchQuery, useCaseFilter]);
+
+  const usageM = parseFloat(monthlyUsageM) || 0;
+
+  const costRankings = useMemo(() => {
+    if (usageM <= 0) return [];
+    return liveModels
+      .map((model) => ({
+        name: model.name,
+        provider: model.provider,
+        cost: monthlyCost(model, usageM),
+      }))
+      .sort((a, b) => a.cost - b.cost);
+  }, [liveModels, usageM]);
+
+  const top3Cheapest = costRankings.slice(0, 3);
 
   const theme = isDark
     ? {
@@ -249,9 +448,18 @@ export default function Home() {
         cell: "text-gray-300",
         updateBanner: "bg-blue-500/10 border-blue-500/30 text-blue-300",
         btn: "bg-gray-800 hover:bg-gray-700 text-gray-300 border-gray-700",
-        btnPrimary: "bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-700",
+        btnPrimary:
+          "bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-700",
         footer: "text-gray-500",
         toggle: "bg-gray-800 hover:bg-gray-700 text-yellow-400",
+        input:
+          "bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-blue-500",
+        select: "bg-gray-800 border-gray-700 text-white focus:ring-blue-500",
+        calcSection: "bg-gray-900 border-gray-800",
+        calcHighlight: "bg-green-500/10 border-green-500/30",
+        refreshBtn:
+          "bg-blue-600 hover:bg-blue-500 text-white border-blue-500",
+        muted: "text-gray-500",
       }
     : {
         page: "bg-gray-50 text-gray-900",
@@ -265,10 +473,21 @@ export default function Home() {
         cell: "text-gray-600",
         updateBanner: "bg-blue-50 border-blue-200 text-blue-700",
         btn: "bg-gray-100 hover:bg-gray-200 text-gray-600 border-gray-200",
-        btnPrimary: "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200",
+        btnPrimary:
+          "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200",
         footer: "text-gray-400",
         toggle: "bg-gray-100 hover:bg-gray-200 text-amber-500",
+        input:
+          "bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500",
+        select: "bg-white border-gray-300 text-gray-900 focus:ring-blue-500",
+        calcSection: "bg-white border-gray-200 shadow-sm",
+        calcHighlight: "bg-green-50 border-green-200",
+        refreshBtn:
+          "bg-blue-600 hover:bg-blue-700 text-white border-blue-600",
+        muted: "text-gray-400",
       };
+
+  const minInput = Math.min(...liveModels.map((m) => m.inputPrice));
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${theme.page}`}>
@@ -296,6 +515,21 @@ export default function Home() {
           >
             数据更新时间：{updateDate} · 价格仅供参考，请以各厂商官网为准
           </div>
+
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={refreshSimulatedPrices}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition ${theme.refreshBtn}`}
+            >
+              <RefreshCw size={16} />
+              刷新模拟价格
+            </button>
+            <span className={`text-sm ${theme.muted}`}>
+              上次刷新时间：
+              {lastRefresh ? formatDateTime(lastRefresh) : "尚未刷新"}
+            </span>
+          </div>
         </div>
       </header>
 
@@ -303,12 +537,12 @@ export default function Home() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className={`rounded-lg p-4 border ${theme.card}`}>
             <div className={`text-sm ${theme.cardLabel}`}>模型总数</div>
-            <div className="text-2xl font-bold">{models.length}</div>
+            <div className="text-2xl font-bold">{liveModels.length}</div>
           </div>
           <div className={`rounded-lg p-4 border ${theme.card}`}>
             <div className={`text-sm ${theme.cardLabel}`}>最便宜输入</div>
             <div className="text-2xl font-bold text-green-500">
-              ${Math.min(...models.map((m) => m.inputPrice)).toFixed(3)}/M
+              ${formatPrice(minInput)}/M
             </div>
           </div>
           <div className={`rounded-lg p-4 border ${theme.card}`}>
@@ -320,6 +554,124 @@ export default function Home() {
             <div className="text-2xl font-bold text-purple-500">2M</div>
           </div>
         </div>
+
+        {/* 成本计算器 */}
+        <div
+          className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <Calculator size={20} className="text-blue-500" />
+            <h2 className="text-lg font-semibold">成本计算器</h2>
+          </div>
+          <div className="flex flex-wrap items-end gap-4 mb-6">
+            <label className="flex flex-col gap-1.5">
+              <span className={`text-sm ${theme.cardLabel}`}>
+                每月使用量（百万 Token）
+              </span>
+              <input
+                type="number"
+                min="0"
+                step="0.1"
+                value={monthlyUsageM}
+                onChange={(e) => setMonthlyUsageM(e.target.value)}
+                className={`w-48 px-3 py-2 rounded-lg border focus:outline-none focus:ring-2 ${theme.input}`}
+                placeholder="例如 10"
+              />
+            </label>
+            <p className={`text-sm ${theme.muted} pb-2`}>
+              按 50% 输入 + 50% 输出估算月成本
+            </p>
+          </div>
+
+          {usageM > 0 && top3Cheapest.length > 0 && (
+            <div className="mb-6">
+              <h3 className={`text-sm font-medium mb-3 ${theme.cardLabel}`}>
+                最便宜推荐（Top 3）
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {top3Cheapest.map((item, idx) => (
+                  <div
+                    key={item.name}
+                    className={`rounded-lg border p-4 ${theme.calcHighlight}`}
+                  >
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg font-bold text-green-500">
+                        #{idx + 1}
+                      </span>
+                      <span className="font-semibold">{item.name}</span>
+                    </div>
+                    <p className={`text-xs ${theme.muted}`}>{item.provider}</p>
+                    <p className="text-xl font-bold text-green-500 mt-2">
+                      ${item.cost.toFixed(2)}/月
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {usageM > 0 && (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className={`border-b ${theme.thead}`}>
+                    <th className="text-left py-2 px-2">模型</th>
+                    <th className="text-left py-2 px-2">提供商</th>
+                    <th className="text-right py-2 px-2">预估月成本</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {costRankings.map((item) => (
+                    <tr key={item.name} className={`border-b ${theme.row}`}>
+                      <td className="py-2 px-2 font-medium">{item.name}</td>
+                      <td className={`py-2 px-2 ${theme.cell}`}>
+                        {item.provider}
+                      </td>
+                      <td className="py-2 px-2 text-right text-blue-500 font-medium">
+                        ${item.cost.toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        {/* 搜索 + 用途筛选 */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-4">
+          <div className="relative flex-1">
+            <Search
+              size={18}
+              className={`absolute left-3 top-1/2 -translate-y-1/2 ${theme.muted}`}
+            />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="搜索模型、提供商或用途..."
+              className={`w-full pl-10 pr-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 ${theme.input}`}
+            />
+          </div>
+          <select
+            value={useCaseFilter}
+            onChange={(e) =>
+              setUseCaseFilter(e.target.value as UseCaseFilter)
+            }
+            className={`sm:w-52 px-3 py-2.5 rounded-lg border focus:outline-none focus:ring-2 ${theme.select}`}
+            aria-label="推荐用途筛选"
+          >
+            {USE_CASE_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <p className={`text-sm mb-3 ${theme.muted}`}>
+          显示 {filteredModels.length} / {liveModels.length} 个模型
+        </p>
 
         <div className={`rounded-xl border overflow-hidden ${theme.table}`}>
           <div className="overflow-x-auto">
@@ -338,72 +690,101 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                {models.map((model) => (
-                  <tr
-                    key={model.name}
-                    className={`border-b transition ${theme.row}`}
-                  >
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-medium">{model.name}</span>
-                        <button
-                          type="button"
-                          onClick={() => copyModelName(model.name)}
-                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs border transition ${theme.btn}`}
-                          title="复制模型名称"
-                        >
-                          {copiedName === model.name ? (
-                            <>
-                              <Check size={12} className="text-green-500" />
-                              已复制
-                            </>
-                          ) : (
-                            <>
-                              <Copy size={12} />
-                              复制名称
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    </td>
-                    <td className={`px-4 py-3 ${theme.cell}`}>{model.provider}</td>
-                    <td className="px-4 py-3 text-green-500">
-                      ${model.inputPrice.toFixed(2)}
-                    </td>
-                    <td className="px-4 py-3 text-yellow-500">
-                      ${model.outputPrice.toFixed(2)}
-                    </td>
-                    <td className="px-4 py-3 text-blue-500">
-                      ${getBlendedPrice(model).toFixed(2)}
-                    </td>
-                    <td className={`px-4 py-3 ${theme.cell}`}>{model.context}</td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`px-2 py-1 rounded text-xs ${
-                          model.speed === "Very Fast"
-                            ? "bg-green-500/20 text-green-500"
-                            : model.speed === "Fast"
-                              ? "bg-blue-500/20 text-blue-500"
-                              : "bg-yellow-500/20 text-yellow-500"
-                        }`}
-                      >
-                        {model.speed}
-                      </span>
-                    </td>
-                    <td className={`px-4 py-3 ${theme.cell}`}>{model.useCase}</td>
-                    <td className="px-4 py-3">
-                      <a
-                        href={model.officialUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs border transition ${theme.btnPrimary}`}
-                      >
-                        <ExternalLink size={12} />
-                        官网
-                      </a>
+                {filteredModels.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={9}
+                      className={`px-4 py-8 text-center ${theme.muted}`}
+                    >
+                      没有匹配的模型，请调整搜索或筛选条件
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  filteredModels.map((model) => (
+                    <tr
+                      key={model.name}
+                      className={`border-b transition ${theme.row}`}
+                    >
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-medium">{model.name}</span>
+                          <button
+                            type="button"
+                            onClick={() => copyModelName(model.name)}
+                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs border transition ${theme.btn}`}
+                            title="复制模型名称"
+                          >
+                            {copiedName === model.name ? (
+                              <>
+                                <Check size={12} className="text-green-500" />
+                                已复制
+                              </>
+                            ) : (
+                              <>
+                                <Copy size={12} />
+                                复制名称
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </td>
+                      <td className={`px-4 py-3 ${theme.cell}`}>
+                        {model.provider}
+                      </td>
+                      <td className="px-4 py-3 text-green-500">
+                        <div className="inline-flex items-center flex-wrap">
+                          <span>${formatPrice(model.inputPrice)}</span>
+                          <PriceTrendBadge
+                            trend={model.inputTrend}
+                            pct={model.inputChangePct}
+                          />
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-yellow-500">
+                        <div className="inline-flex items-center flex-wrap">
+                          <span>${formatPrice(model.outputPrice)}</span>
+                          <PriceTrendBadge
+                            trend={model.outputTrend}
+                            pct={model.outputChangePct}
+                          />
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-blue-500">
+                        ${formatPrice(getBlendedPrice(model))}
+                      </td>
+                      <td className={`px-4 py-3 ${theme.cell}`}>
+                        {model.context}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`px-2 py-1 rounded text-xs ${
+                            model.speed === "Very Fast"
+                              ? "bg-green-500/20 text-green-500"
+                              : model.speed === "Fast"
+                                ? "bg-blue-500/20 text-blue-500"
+                                : "bg-yellow-500/20 text-yellow-500"
+                          }`}
+                        >
+                          {model.speed}
+                        </span>
+                      </td>
+                      <td className={`px-4 py-3 ${theme.cell}`}>
+                        {model.useCase}
+                      </td>
+                      <td className="px-4 py-3">
+                        <a
+                          href={model.officialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs border transition ${theme.btnPrimary}`}
+                        >
+                          <ExternalLink size={12} />
+                          官网
+                        </a>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -411,6 +792,8 @@ export default function Home() {
 
         <div className={`mt-6 text-center text-xs ${theme.footer}`}>
           价格单位: 每 100 万 tokens · 数据更新时间: {updateDate}
+          {lastRefresh &&
+            ` · 模拟价格刷新: ${formatDateTime(lastRefresh)}`}
         </div>
       </main>
     </div>
