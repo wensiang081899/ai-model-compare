@@ -12,6 +12,8 @@ import {
   Search,
 } from "lucide-react";
 
+type Lang = "zh" | "en";
+
 type Model = {
   name: string;
   provider: string;
@@ -39,13 +41,131 @@ type UseCaseFilter =
   | "value"
   | "fast";
 
-const USE_CASE_OPTIONS: { value: UseCaseFilter; label: string }[] = [
-  { value: "all", label: "全部用途" },
-  { value: "coding", label: "编程 / Coding" },
-  { value: "long-context", label: "长上下文" },
-  { value: "value", label: "性价比" },
-  { value: "fast", label: "快速响应" },
-];
+const translations = {
+  zh: {
+    subtitle: "智能模型价格对比",
+    switchToLight: "切换到亮色模式",
+    switchToDark: "切换到暗色模式",
+    switchToEn: "切换到 English",
+    switchToZh: "切换到中文",
+    updateBannerPrefix: "数据更新时间：",
+    updateBannerSuffix: " · 价格仅供参考，请以各厂商官网为准",
+    refreshPrices: "刷新模拟价格",
+    lastRefresh: "上次刷新时间：",
+    notRefreshed: "尚未刷新",
+    statTotalModels: "模型总数",
+    statCheapestInput: "最便宜输入",
+    statFastest: "最快速度",
+    statLongestContext: "最长上下文",
+    costCalculator: "成本计算器",
+    monthlyUsage: "每月使用量（百万 Token）",
+    monthlyUsagePlaceholder: "例如 10",
+    costEstimateHint: "按 50% 输入 + 50% 输出估算月成本",
+    cheapestTop3: "最便宜推荐（Top 3）",
+    perMonth: "/月",
+    calcModel: "模型",
+    calcProvider: "提供商",
+    calcMonthlyCost: "预估月成本",
+    searchPlaceholder: "搜索模型、提供商或用途...",
+    filterAria: "推荐用途筛选",
+    filterAll: "全部用途",
+    filterCoding: "编程 / Coding",
+    filterLongContext: "长上下文",
+    filterValue: "性价比",
+    filterFast: "快速响应",
+    showingModels: (shown: number, total: number) =>
+      `显示 ${shown} / ${total} 个模型`,
+    thModel: "模型",
+    thProvider: "提供商",
+    thInput: "输入 ($/M)",
+    thOutput: "输出 ($/M)",
+    thBlended: "混合价",
+    thContext: "上下文",
+    thSpeed: "速度",
+    thUseCase: "推荐用途",
+    thActions: "操作",
+    noResults: "没有匹配的模型，请调整搜索或筛选条件",
+    copyName: "复制名称",
+    copied: "已复制",
+    copyTitle: "复制模型名称",
+    officialSite: "官网",
+    footerPriceUnit: "价格单位: 每 100 万 tokens",
+    footerUpdated: "数据更新时间: ",
+    footerSimRefresh: "模拟价格刷新: ",
+  },
+  en: {
+    subtitle: "AI Model Price Comparison",
+    switchToLight: "Switch to light mode",
+    switchToDark: "Switch to dark mode",
+    switchToEn: "Switch to English",
+    switchToZh: "Switch to 中文",
+    updateBannerPrefix: "Last updated: ",
+    updateBannerSuffix:
+      " · Prices are for reference only; check each vendor's official site.",
+    refreshPrices: "Refresh simulated prices",
+    lastRefresh: "Last refresh: ",
+    notRefreshed: "Not refreshed yet",
+    statTotalModels: "Total models",
+    statCheapestInput: "Cheapest input",
+    statFastest: "Fastest",
+    statLongestContext: "Longest context",
+    costCalculator: "Cost Calculator",
+    monthlyUsage: "Monthly usage (M tokens)",
+    monthlyUsagePlaceholder: "e.g. 10",
+    costEstimateHint: "Estimated monthly cost at 50% input + 50% output",
+    cheapestTop3: "Cheapest picks (Top 3)",
+    perMonth: "/mo",
+    calcModel: "Model",
+    calcProvider: "Provider",
+    calcMonthlyCost: "Est. monthly cost",
+    searchPlaceholder: "Search models, providers, or use cases...",
+    filterAria: "Filter by use case",
+    filterAll: "All use cases",
+    filterCoding: "Coding",
+    filterLongContext: "Long context",
+    filterValue: "Best value",
+    filterFast: "Fast response",
+    showingModels: (shown: number, total: number) =>
+      `Showing ${shown} / ${total} models`,
+    thModel: "Model",
+    thProvider: "Provider",
+    thInput: "Input ($/M)",
+    thOutput: "Output ($/M)",
+    thBlended: "Blended",
+    thContext: "Context",
+    thSpeed: "Speed",
+    thUseCase: "Use case",
+    thActions: "Actions",
+    noResults: "No matching models. Adjust search or filters.",
+    copyName: "Copy name",
+    copied: "Copied",
+    copyTitle: "Copy model name",
+    officialSite: "Official site",
+    footerPriceUnit: "Prices per 1M tokens",
+    footerUpdated: "Data updated: ",
+    footerSimRefresh: "Simulated price refresh: ",
+  },
+} as const;
+
+const USE_CASE_FILTER_LABELS: Record<
+  Lang,
+  { value: UseCaseFilter; labelKey: keyof (typeof translations)["zh"] }[]
+> = {
+  zh: [
+    { value: "all", labelKey: "filterAll" },
+    { value: "coding", labelKey: "filterCoding" },
+    { value: "long-context", labelKey: "filterLongContext" },
+    { value: "value", labelKey: "filterValue" },
+    { value: "fast", labelKey: "filterFast" },
+  ],
+  en: [
+    { value: "all", labelKey: "filterAll" },
+    { value: "coding", labelKey: "filterCoding" },
+    { value: "long-context", labelKey: "filterLongContext" },
+    { value: "value", labelKey: "filterValue" },
+    { value: "fast", labelKey: "filterFast" },
+  ],
+};
 
 const baseModels: Model[] = [
   {
@@ -233,9 +353,9 @@ const baseModels: Model[] = [
 const getBlendedPrice = (model: { inputPrice: number; outputPrice: number }) =>
   (model.inputPrice + model.outputPrice) / 2;
 
-function formatToday(): string {
-  const now = new Date();
-  return now.toLocaleDateString("zh-CN", {
+function formatToday(lang: Lang): string {
+  const locale = lang === "zh" ? "zh-CN" : "en-US";
+  return new Date().toLocaleDateString(locale, {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -243,8 +363,9 @@ function formatToday(): string {
   });
 }
 
-function formatDateTime(date: Date): string {
-  return date.toLocaleString("zh-CN", {
+function formatDateTime(date: Date, lang: Lang): string {
+  const locale = lang === "zh" ? "zh-CN" : "en-US";
+  return date.toLocaleString(locale, {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -364,6 +485,7 @@ function formatPrice(price: number): string {
 }
 
 export default function Home() {
+  const [lang, setLang] = useState<Lang>("zh");
   const [isDark, setIsDark] = useState(true);
   const [copiedName, setCopiedName] = useState<string | null>(null);
   const [liveModels, setLiveModels] = useState<LiveModel[]>(() =>
@@ -374,7 +496,8 @@ export default function Home() {
   const [useCaseFilter, setUseCaseFilter] = useState<UseCaseFilter>("all");
   const [monthlyUsageM, setMonthlyUsageM] = useState<string>("10");
 
-  const updateDate = formatToday();
+  const t = translations[lang];
+  const updateDate = formatToday(lang);
 
   const copyModelName = useCallback(async (name: string) => {
     try {
@@ -452,6 +575,7 @@ export default function Home() {
           "bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-700",
         footer: "text-gray-500",
         toggle: "bg-gray-800 hover:bg-gray-700 text-yellow-400",
+        langToggle: "bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-700",
         input:
           "bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-blue-500",
         select: "bg-gray-800 border-gray-700 text-white focus:ring-blue-500",
@@ -477,6 +601,7 @@ export default function Home() {
           "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200",
         footer: "text-gray-400",
         toggle: "bg-gray-100 hover:bg-gray-200 text-amber-500",
+        langToggle: "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200",
         input:
           "bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500",
         select: "bg-white border-gray-300 text-gray-900 focus:ring-blue-500",
@@ -498,22 +623,34 @@ export default function Home() {
               <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-display">
                 AI TOKEN
               </h1>
-              <p className={`mt-1 ${theme.subtitle}`}>智能模型价格对比</p>
+              <p className={`mt-1 ${theme.subtitle}`}>{t.subtitle}</p>
             </div>
-            <button
-              type="button"
-              onClick={() => setIsDark((d) => !d)}
-              className={`flex items-center justify-center w-10 h-10 rounded-lg border transition-colors ${theme.toggle}`}
-              aria-label={isDark ? "切换到亮色模式" : "切换到暗色模式"}
-            >
-              {isDark ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setLang((l) => (l === "zh" ? "en" : "zh"))}
+                className={`px-3 h-10 rounded-lg border text-sm font-medium transition-colors ${theme.langToggle}`}
+                aria-label={lang === "zh" ? t.switchToEn : t.switchToZh}
+              >
+                {lang === "zh" ? "English" : "中文"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsDark((d) => !d)}
+                className={`flex items-center justify-center w-10 h-10 rounded-lg border transition-colors ${theme.toggle}`}
+                aria-label={isDark ? t.switchToLight : t.switchToDark}
+              >
+                {isDark ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+            </div>
           </div>
 
           <div
             className={`mt-4 px-4 py-2.5 rounded-lg border text-sm ${theme.updateBanner}`}
           >
-            数据更新时间：{updateDate} · 价格仅供参考，请以各厂商官网为准
+            {t.updateBannerPrefix}
+            {updateDate}
+            {t.updateBannerSuffix}
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -523,11 +660,13 @@ export default function Home() {
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition ${theme.refreshBtn}`}
             >
               <RefreshCw size={16} />
-              刷新模拟价格
+              {t.refreshPrices}
             </button>
             <span className={`text-sm ${theme.muted}`}>
-              上次刷新时间：
-              {lastRefresh ? formatDateTime(lastRefresh) : "尚未刷新"}
+              {t.lastRefresh}
+              {lastRefresh
+                ? formatDateTime(lastRefresh, lang)
+                : t.notRefreshed}
             </span>
           </div>
         </div>
@@ -536,37 +675,40 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className={`rounded-lg p-4 border ${theme.card}`}>
-            <div className={`text-sm ${theme.cardLabel}`}>模型总数</div>
+            <div className={`text-sm ${theme.cardLabel}`}>
+              {t.statTotalModels}
+            </div>
             <div className="text-2xl font-bold">{liveModels.length}</div>
           </div>
           <div className={`rounded-lg p-4 border ${theme.card}`}>
-            <div className={`text-sm ${theme.cardLabel}`}>最便宜输入</div>
+            <div className={`text-sm ${theme.cardLabel}`}>
+              {t.statCheapestInput}
+            </div>
             <div className="text-2xl font-bold text-green-500">
               ${formatPrice(minInput)}/M
             </div>
           </div>
           <div className={`rounded-lg p-4 border ${theme.card}`}>
-            <div className={`text-sm ${theme.cardLabel}`}>最快速度</div>
+            <div className={`text-sm ${theme.cardLabel}`}>{t.statFastest}</div>
             <div className="text-2xl font-bold text-blue-500">Groq</div>
           </div>
           <div className={`rounded-lg p-4 border ${theme.card}`}>
-            <div className={`text-sm ${theme.cardLabel}`}>最长上下文</div>
+            <div className={`text-sm ${theme.cardLabel}`}>
+              {t.statLongestContext}
+            </div>
             <div className="text-2xl font-bold text-purple-500">2M</div>
           </div>
         </div>
 
-        {/* 成本计算器 */}
-        <div
-          className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}
-        >
+        <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
           <div className="flex items-center gap-2 mb-4">
             <Calculator size={20} className="text-blue-500" />
-            <h2 className="text-lg font-semibold">成本计算器</h2>
+            <h2 className="text-lg font-semibold">{t.costCalculator}</h2>
           </div>
           <div className="flex flex-wrap items-end gap-4 mb-6">
             <label className="flex flex-col gap-1.5">
               <span className={`text-sm ${theme.cardLabel}`}>
-                每月使用量（百万 Token）
+                {t.monthlyUsage}
               </span>
               <input
                 type="number"
@@ -575,18 +717,16 @@ export default function Home() {
                 value={monthlyUsageM}
                 onChange={(e) => setMonthlyUsageM(e.target.value)}
                 className={`w-48 px-3 py-2 rounded-lg border focus:outline-none focus:ring-2 ${theme.input}`}
-                placeholder="例如 10"
+                placeholder={t.monthlyUsagePlaceholder}
               />
             </label>
-            <p className={`text-sm ${theme.muted} pb-2`}>
-              按 50% 输入 + 50% 输出估算月成本
-            </p>
+            <p className={`text-sm ${theme.muted} pb-2`}>{t.costEstimateHint}</p>
           </div>
 
           {usageM > 0 && top3Cheapest.length > 0 && (
             <div className="mb-6">
               <h3 className={`text-sm font-medium mb-3 ${theme.cardLabel}`}>
-                最便宜推荐（Top 3）
+                {t.cheapestTop3}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {top3Cheapest.map((item, idx) => (
@@ -602,7 +742,8 @@ export default function Home() {
                     </div>
                     <p className={`text-xs ${theme.muted}`}>{item.provider}</p>
                     <p className="text-xl font-bold text-green-500 mt-2">
-                      ${item.cost.toFixed(2)}/月
+                      ${item.cost.toFixed(2)}
+                      {t.perMonth}
                     </p>
                   </div>
                 ))}
@@ -615,9 +756,11 @@ export default function Home() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className={`border-b ${theme.thead}`}>
-                    <th className="text-left py-2 px-2">模型</th>
-                    <th className="text-left py-2 px-2">提供商</th>
-                    <th className="text-right py-2 px-2">预估月成本</th>
+                    <th className="text-left py-2 px-2">{t.calcModel}</th>
+                    <th className="text-left py-2 px-2">{t.calcProvider}</th>
+                    <th className="text-right py-2 px-2">
+                      {t.calcMonthlyCost}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -638,7 +781,6 @@ export default function Home() {
           )}
         </div>
 
-        {/* 搜索 + 用途筛选 */}
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <div className="relative flex-1">
             <Search
@@ -649,7 +791,7 @@ export default function Home() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="搜索模型、提供商或用途..."
+              placeholder={t.searchPlaceholder}
               className={`w-full pl-10 pr-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 ${theme.input}`}
             />
           </div>
@@ -659,18 +801,18 @@ export default function Home() {
               setUseCaseFilter(e.target.value as UseCaseFilter)
             }
             className={`sm:w-52 px-3 py-2.5 rounded-lg border focus:outline-none focus:ring-2 ${theme.select}`}
-            aria-label="推荐用途筛选"
+            aria-label={t.filterAria}
           >
-            {USE_CASE_OPTIONS.map((opt) => (
+            {USE_CASE_FILTER_LABELS[lang].map((opt) => (
               <option key={opt.value} value={opt.value}>
-                {opt.label}
+                {t[opt.labelKey]}
               </option>
             ))}
           </select>
         </div>
 
         <p className={`text-sm mb-3 ${theme.muted}`}>
-          显示 {filteredModels.length} / {liveModels.length} 个模型
+          {t.showingModels(filteredModels.length, liveModels.length)}
         </p>
 
         <div className={`rounded-xl border overflow-hidden ${theme.table}`}>
@@ -678,15 +820,15 @@ export default function Home() {
             <table className="w-full">
               <thead className={`border-b ${theme.thead}`}>
                 <tr className="text-left text-sm">
-                  <th className="px-4 py-3">模型</th>
-                  <th className="px-4 py-3">提供商</th>
-                  <th className="px-4 py-3">输入 ($/M)</th>
-                  <th className="px-4 py-3">输出 ($/M)</th>
-                  <th className="px-4 py-3">混合价</th>
-                  <th className="px-4 py-3">上下文</th>
-                  <th className="px-4 py-3">速度</th>
-                  <th className="px-4 py-3">推荐用途</th>
-                  <th className="px-4 py-3">操作</th>
+                  <th className="px-4 py-3">{t.thModel}</th>
+                  <th className="px-4 py-3">{t.thProvider}</th>
+                  <th className="px-4 py-3">{t.thInput}</th>
+                  <th className="px-4 py-3">{t.thOutput}</th>
+                  <th className="px-4 py-3">{t.thBlended}</th>
+                  <th className="px-4 py-3">{t.thContext}</th>
+                  <th className="px-4 py-3">{t.thSpeed}</th>
+                  <th className="px-4 py-3">{t.thUseCase}</th>
+                  <th className="px-4 py-3">{t.thActions}</th>
                 </tr>
               </thead>
               <tbody>
@@ -696,7 +838,7 @@ export default function Home() {
                       colSpan={9}
                       className={`px-4 py-8 text-center ${theme.muted}`}
                     >
-                      没有匹配的模型，请调整搜索或筛选条件
+                      {t.noResults}
                     </td>
                   </tr>
                 ) : (
@@ -712,17 +854,17 @@ export default function Home() {
                             type="button"
                             onClick={() => copyModelName(model.name)}
                             className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs border transition ${theme.btn}`}
-                            title="复制模型名称"
+                            title={t.copyTitle}
                           >
                             {copiedName === model.name ? (
                               <>
                                 <Check size={12} className="text-green-500" />
-                                已复制
+                                {t.copied}
                               </>
                             ) : (
                               <>
                                 <Copy size={12} />
-                                复制名称
+                                {t.copyName}
                               </>
                             )}
                           </button>
@@ -779,7 +921,7 @@ export default function Home() {
                           className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs border transition ${theme.btnPrimary}`}
                         >
                           <ExternalLink size={12} />
-                          官网
+                          {t.officialSite}
                         </a>
                       </td>
                     </tr>
@@ -791,9 +933,10 @@ export default function Home() {
         </div>
 
         <div className={`mt-6 text-center text-xs ${theme.footer}`}>
-          价格单位: 每 100 万 tokens · 数据更新时间: {updateDate}
+          {t.footerPriceUnit} · {t.footerUpdated}
+          {updateDate}
           {lastRefresh &&
-            ` · 模拟价格刷新: ${formatDateTime(lastRefresh)}`}
+            ` · ${t.footerSimRefresh}${formatDateTime(lastRefresh, lang)}`}
         </div>
       </main>
     </div>
