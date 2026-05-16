@@ -984,6 +984,8 @@ function getUseCaseEn(modelName: string): string {
   };
   return map[modelName] || modelName;
 }
+  return map[modelName] || modelName;
+}
 
 // 获取英文提供商名称
 function getProviderEn(provider: string): string {
