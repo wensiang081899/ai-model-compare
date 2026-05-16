@@ -735,7 +735,6 @@ export default function Home() {
         </div>
 
         <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
-        <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
           <div className="flex items-center gap-2 mb-4">
             <Calculator size={20} className="text-blue-500" />
             <h2 className="text-lg font-semibold">{t.costCalculator}</h2>
