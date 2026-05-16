@@ -620,11 +620,16 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-display">
-                AI TOKEN
-              </h1>
-              <p className={`mt-1 ${theme.subtitle}`}>{t.subtitle}</p>
-            </div>
+  <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-display">
+    Inferly
+  </h1>
+  <p className="text-xl mt-2 text-gray-300 max-w-2xl">
+    Find the cheapest AI model instantly.
+  </p>
+  <p className="text-md mt-1 text-gray-400">
+    Compare pricing, speed, and performance across top AI providers.
+  </p>
+</div>
             <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
