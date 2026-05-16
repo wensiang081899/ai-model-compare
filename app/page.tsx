@@ -484,6 +484,31 @@ function formatPrice(price: number): string {
   return price.toFixed(2);
 }
 
+// 获取英文用途
+function getUseCaseEn(modelName: string): string {
+  const map: Record<string, string> = {
+    "GPT-4o": "General/Coding",
+    "GPT-4o mini": "Light tasks",
+    "GPT-4.5": "Complex reasoning",
+    "GPT-5": "Flagship general",
+    "Claude 3.5 Sonnet": "Complex tasks/Coding",
+    "Claude 3.7 Sonnet": "Coding/Complex tasks",
+    "Claude 3 Opus": "High-difficulty tasks",
+    "Gemini 1.5 Pro": "Long context",
+    "Gemini 1.5 Flash": "Fast response",
+    "Gemini 2.5 Pro": "Multimodal/Long context",
+    "DeepSeek V3": "Best value",
+    "DeepSeek V4": "Next-gen value",
+    "DeepSeek R1": "Reasoning tasks",
+    "Llama 4": "Open source flagship",
+    "Llama 3.3 70B": "Real-time apps",
+    "Llama 3.1 405B": "Giant model",
+    "Mixtral 8x22B": "Open source choice",
+    "Command R+": "RAG apps",
+  };
+  return map[modelName] || modelName;
+}
+
 export default function Home() {
   const [lang, setLang] = useState<Lang>("zh");
   const [recommendType, setRecommendType] = useState<string>("cheapest");
@@ -621,16 +646,16 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-  <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-display">
-    Inferly
-  </h1>
-  <p className="text-xl mt-2 text-gray-300 max-w-2xl">
-  {lang === "zh" ? "瞬间找到最便宜的AI模型" : "Find the cheapest AI model instantly."}
-</p>
-<p className="text-md mt-1 text-gray-400">
-  {lang === "zh" ? "对比顶级AI提供商的价格、速度和性能" : "Compare pricing, speed, and performance across top AI providers."}
-</p>
-</div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-display">
+                Inferly
+              </h1>
+              <p className="text-xl mt-2 text-gray-300 max-w-2xl">
+                {lang === "zh" ? "瞬间找到最便宜的AI模型" : "Find the cheapest AI model instantly."}
+              </p>
+              <p className="text-md mt-1 text-gray-400">
+                {lang === "zh" ? "对比顶级AI提供商的价格、速度和性能" : "Compare pricing, speed, and performance across top AI providers."}
+              </p>
+            </div>
             <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
@@ -708,56 +733,57 @@ export default function Home() {
 
         {/* Why Use Us 区块 */}
         <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
-         <h2 className="text-xl font-semibold mb-6 text-center">
-  {lang === "zh" ? "为什么选择 Inferly？" : "Why Inferly?"}
-</h2>
+          <h2 className="text-xl font-semibold mb-6 text-center">
+            {lang === "zh" ? "为什么选择 Inferly？" : "Why Inferly?"}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="text-center p-3">
               <div className="text-2xl mb-2">💰</div>
               <div className="font-bold text-green-500">
-  {lang === "zh" ? "节省AI成本" : "Save AI costs"}
-</div>
-<div className={`text-xs mt-1 ${theme.muted}`}>
-  {lang === "zh" ? "跨提供商对比价格" : "Compare prices across providers"}
-</div>
+                {lang === "zh" ? "节省AI成本" : "Save AI costs"}
+              </div>
+              <div className={`text-xs mt-1 ${theme.muted}`}>
+                {lang === "zh" ? "跨提供商对比价格" : "Compare prices across providers"}
+              </div>
             </div>
             <div className="text-center p-3">
               <div className="text-2xl mb-2">⚡</div>
               <div className="font-bold text-blue-500">
-  {lang === "zh" ? "即时对比模型" : "Compare models instantly"}
-</div>
-<div className={`text-xs mt-1 ${theme.muted}`}>
-  {lang === "zh" ? "并排表格视图" : "Side-by-side table view"}
-</div>
+                {lang === "zh" ? "即时对比模型" : "Compare models instantly"}
+              </div>
+              <div className={`text-xs mt-1 ${theme.muted}`}>
+                {lang === "zh" ? "并排表格视图" : "Side-by-side table view"}
+              </div>
             </div>
             <div className="text-center p-3">
               <div className="text-2xl mb-2">🎯</div>
               <div className="font-bold text-purple-500">
-  {lang === "zh" ? "找到最佳提供商" : "Find the best provider"}
-</div>
-<div className={`text-xs mt-1 ${theme.muted}`}>
-  {lang === "zh" ? "OpenAI, Anthropic, Google 等" : "OpenAI, Anthropic, Google & more"}
-</div>
+                {lang === "zh" ? "找到最佳提供商" : "Find the best provider"}
+              </div>
+              <div className={`text-xs mt-1 ${theme.muted}`}>
+                {lang === "zh" ? "OpenAI, Anthropic, Google 等" : "OpenAI, Anthropic, Google & more"}
+              </div>
             </div>
             <div className="text-center p-3">
               <div className="text-2xl mb-2">📊</div>
               <div className="font-bold text-orange-500">
-  {lang === "zh" ? "实时洞察" : "Real-time insights"}
-</div>
-<div className={`text-xs mt-1 ${theme.muted}`}>
-  {lang === "zh" ? "价格趋势与成本计算器" : "Price trends & cost calculator"}
-</div>
+                {lang === "zh" ? "实时洞察" : "Real-time insights"}
+              </div>
+              <div className={`text-xs mt-1 ${theme.muted}`}>
+                {lang === "zh" ? "价格趋势与成本计算器" : "Price trends & cost calculator"}
+              </div>
             </div>
           </div>
+        </div>
 
-                         {/* 智能推荐引擎 */}
+        {/* 智能推荐引擎 */}
         <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
           <h2 className="text-xl font-semibold mb-4 text-center">
-  🤖 {lang === "zh" ? "根据你的需求，智能推荐" : "Smart Recommendations Based on Your Needs"}
-</h2>
-<p className={`text-sm text-center mb-6 ${theme.muted}`}>
-  {lang === "zh" ? "选择你的首要需求，我们帮你找到最合适的模型" : "Select your priority, we'll find the best model for you"}
-</p>
+            🤖 {lang === "zh" ? "根据你的需求，智能推荐" : "Smart Recommendations Based on Your Needs"}
+          </h2>
+          <p className={`text-sm text-center mb-6 ${theme.muted}`}>
+            {lang === "zh" ? "选择你的首要需求，我们帮你找到最合适的模型" : "Select your priority, we'll find the best model for you"}
+          </p>
           
           <div className="flex flex-wrap justify-center gap-3 mb-8">
             <button
@@ -809,35 +835,35 @@ export default function Home() {
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🏆</span>
                   <span className="font-bold text-green-500">
-  {lang === "zh" ? "🏆 首选：最便宜" : "🏆 Top Pick: Cheapest"}
-</span>
+                    {lang === "zh" ? "🏆 首选：最便宜" : "🏆 Top Pick: Cheapest"}
+                  </span>
                 </div>
                 <div className="text-xl font-semibold">Gemini 1.5 Flash</div>
                 <div className={`text-sm ${theme.muted}`}>Google</div>
                 <div className="mt-2 flex gap-3 text-sm">
-                  <span className="text-green-500">输入: $0.075/M</span>
-                  <span className="text-yellow-500">输出: $0.30/M</span>
+                  <span className="text-green-500">{lang === "zh" ? "输入" : "Input"}: $0.075/M</span>
+                  <span className="text-yellow-500">{lang === "zh" ? "输出" : "Output"}: $0.30/M</span>
                 </div>
                 <div className={`text-xs mt-2 ${theme.muted}`}>
-  {lang === "zh" ? "💰 性价比之王，适合大规模、成本敏感的应用" : "💰 Best value for large-scale, cost-sensitive applications"}
-</div>
+                  {lang === "zh" ? "💰 性价比之王，适合大规模、成本敏感的应用" : "💰 Best value for large-scale, cost-sensitive applications"}
+                </div>
               </div>
               <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🥈</span>
                   <span className="font-bold text-blue-500">
-  {lang === "zh" ? "亚军" : "Runner Up"}
-</span>
+                    {lang === "zh" ? "亚军" : "Runner Up"}
+                  </span>
                 </div>
                 <div className="text-xl font-semibold">DeepSeek V3</div>
                 <div className={`text-sm ${theme.muted}`}>DeepSeek</div>
                 <div className="mt-2 flex gap-3 text-sm">
-                  <span className="text-green-500">输入: $0.14/M</span>
-                  <span className="text-yellow-500">输出: $0.28/M</span>
+                  <span className="text-green-500">{lang === "zh" ? "输入" : "Input"}: $0.14/M</span>
+                  <span className="text-yellow-500">{lang === "zh" ? "输出" : "Output"}: $0.28/M</span>
                 </div>
                 <div className={`text-xs mt-2 ${theme.muted}`}>
-  {lang === "zh" ? "📈 极低的输入成本，强大的通用能力" : "📈 Ultra-low input cost, strong general capability"}
-</div>
+                  {lang === "zh" ? "📈 极低的输入成本，强大的通用能力" : "📈 Ultra-low input cost, strong general capability"}
+                </div>
               </div>
             </div>
           )}
@@ -848,35 +874,35 @@ export default function Home() {
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🏆</span>
                   <span className="font-bold text-blue-500">
-  {lang === "zh" ? "🏆 首选：最快速度" : "🏆 Top Pick: Fastest"}
-</span>
+                    {lang === "zh" ? "🏆 首选：最快速度" : "🏆 Top Pick: Fastest"}
+                  </span>
                 </div>
                 <div className="text-xl font-semibold">Groq (Llama 3.3 70B)</div>
                 <div className={`text-sm ${theme.muted}`}>Groq</div>
                 <div className="mt-2 flex gap-3 text-sm">
-                  <span className="text-green-500">输入: $0.70/M</span>
-                  <span className="text-yellow-500">输出: $0.80/M</span>
+                  <span className="text-green-500">{lang === "zh" ? "输入" : "Input"}: $0.70/M</span>
+                  <span className="text-yellow-500">{lang === "zh" ? "输出" : "Output"}: $0.80/M</span>
                 </div>
                 <div className={`text-xs mt-2 ${theme.muted}`}>
-  {lang === "zh" ? "⚡ 专门的推理加速硬件，极低延迟" : "⚡ Dedicated inference acceleration hardware, ultra-low latency"}
-</div>
+                  {lang === "zh" ? "⚡ 专门的推理加速硬件，极低延迟" : "⚡ Dedicated inference acceleration hardware, ultra-low latency"}
+                </div>
               </div>
               <div className="p-4 rounded-lg bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🥈</span>
                   <span className="font-bold text-green-500">
-  {lang === "zh" ? "性价比之选" : "Value Pick"}
-</span>
+                    {lang === "zh" ? "性价比之选" : "Value Pick"}
+                  </span>
                 </div>
                 <div className="text-xl font-semibold">Gemini 1.5 Flash</div>
                 <div className={`text-sm ${theme.muted}`}>Google</div>
                 <div className="mt-2 flex gap-3 text-sm">
-                  <span className="text-green-500">输入: $0.075/M</span>
-                  <span className="text-yellow-500">输出: $0.30/M</span>
+                  <span className="text-green-500">{lang === "zh" ? "输入" : "Input"}: $0.075/M</span>
+                  <span className="text-yellow-500">{lang === "zh" ? "输出" : "Output"}: $0.30/M</span>
                 </div>
                 <div className={`text-xs mt-2 ${theme.muted}`}>
-  {lang === "zh" ? "⚡ 快速响应 + 极低成本，最佳平衡" : "⚡ Fast response + ultra-low cost, best balance"}
-</div>
+                  {lang === "zh" ? "⚡ 快速响应 + 极低成本，最佳平衡" : "⚡ Fast response + ultra-low cost, best balance"}
+                </div>
               </div>
             </div>
           )}
@@ -887,35 +913,35 @@ export default function Home() {
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🏆</span>
                   <span className="font-bold text-purple-500">
-  {lang === "zh" ? "🏆 首选：最佳编程" : "🏆 Top Pick: Best Coding"}
-</span>
+                    {lang === "zh" ? "🏆 首选：最佳编程" : "🏆 Top Pick: Best Coding"}
+                  </span>
                 </div>
                 <div className="text-xl font-semibold">Claude 3.7 Sonnet</div>
                 <div className={`text-sm ${theme.muted}`}>Anthropic</div>
                 <div className="mt-2 flex gap-3 text-sm">
-                  <span className="text-green-500">输入: $3.00/M</span>
-                  <span className="text-yellow-500">输出: $15.00/M</span>
+                  <span className="text-green-500">{lang === "zh" ? "输入" : "Input"}: $3.00/M</span>
+                  <span className="text-yellow-500">{lang === "zh" ? "输出" : "Output"}: $15.00/M</span>
                 </div>
                 <div className={`text-xs mt-2 ${theme.muted}`}>
-  {lang === "zh" ? "🧠 公认最强的代码生成和理解能力" : "🧠 Recognized as the strongest code generation and understanding"}
-</div>
+                  {lang === "zh" ? "🧠 公认最强的代码生成和理解能力" : "🧠 Recognized as the strongest code generation and understanding"}
+                </div>
               </div>
               <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🥈</span>
                   <span className="font-bold text-blue-500">
-  {lang === "zh" ? "全能选手" : "All-Rounder"}
-</span>
+                    {lang === "zh" ? "全能选手" : "All-Rounder"}
+                  </span>
                 </div>
                 <div className="text-xl font-semibold">GPT-4o</div>
                 <div className={`text-sm ${theme.muted}`}>OpenAI</div>
                 <div className="mt-2 flex gap-3 text-sm">
-                  <span className="text-green-500">输入: $2.50/M</span>
-                  <span className="text-yellow-500">输出: $10.00/M</span>
+                  <span className="text-green-500">{lang === "zh" ? "输入" : "Input"}: $2.50/M</span>
+                  <span className="text-yellow-500">{lang === "zh" ? "输出" : "Output"}: $10.00/M</span>
                 </div>
                 <div className={`text-xs mt-2 ${theme.muted}`}>
-  {lang === "zh" ? "💻 强大的编程能力 + 多模态支持" : "💻 Strong coding ability + multimodal support"}
-</div>
+                  {lang === "zh" ? "💻 强大的编程能力 + 多模态支持" : "💻 Strong coding ability + multimodal support"}
+                </div>
               </div>
             </div>
           )}
@@ -926,44 +952,42 @@ export default function Home() {
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🏆</span>
                   <span className="font-bold text-orange-500">
-  {lang === "zh" ? "🏆 首选：最长上下文" : "🏆 Top Pick: Longest Context"}
-</span>
+                    {lang === "zh" ? "🏆 首选：最长上下文" : "🏆 Top Pick: Longest Context"}
+                  </span>
                 </div>
                 <div className="text-xl font-semibold">Gemini 1.5 Pro</div>
                 <div className={`text-sm ${theme.muted}`}>Google</div>
                 <div className="mt-2 flex gap-3 text-sm">
-                  <span className="text-green-500">输入: $1.25/M</span>
-                  <span className="text-yellow-500">输出: $5.00/M</span>
+                  <span className="text-green-500">{lang === "zh" ? "输入" : "Input"}: $1.25/M</span>
+                  <span className="text-yellow-500">{lang === "zh" ? "输出" : "Output"}: $5.00/M</span>
                 </div>
                 <div className={`text-xs mt-2 ${theme.muted}`}>
-  {lang === "zh" ? "📚 200万 Token 上下文，可处理整本书" : "📚 2M token context, can process entire books"}
-</div>
+                  {lang === "zh" ? "📚 200万 Token 上下文，可处理整本书" : "📚 2M token context, can process entire books"}
+                </div>
               </div>
               <div className="p-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🥈</span>
                   <span className="font-bold text-purple-500">
-  {lang === "zh" ? "多模态之选" : "Multimodal Pick"}
-</span>
+                    {lang === "zh" ? "多模态之选" : "Multimodal Pick"}
+                  </span>
                 </div>
                 <div className="text-xl font-semibold">Gemini 2.5 Pro</div>
                 <div className={`text-sm ${theme.muted}`}>Google</div>
                 <div className="mt-2 flex gap-3 text-sm">
-                  <span className="text-green-500">输入: $1.25/M</span>
-                  <span className="text-yellow-500">输出: $10.00/M</span>
+                  <span className="text-green-500">{lang === "zh" ? "输入" : "Input"}: $1.25/M</span>
+                  <span className="text-yellow-500">{lang === "zh" ? "输出" : "Output"}: $10.00/M</span>
                 </div>
                 <div className={`text-xs mt-2 ${theme.muted}`}>
-  {lang === "zh" ? "🎯 100万 Token + 多模态理解" : "🎯 1M token context + multimodal understanding"}
-</div>
+                  {lang === "zh" ? "🎯 100万 Token + 多模态理解" : "🎯 1M token context + multimodal understanding"}
+                </div>
               </div>
             </div>
           )}
 
           <p className={`text-center text-xs ${theme.muted} mt-6`}>
-  💡 {lang === "zh" ? "点击上方按钮，推荐内容会动态变化" : "Click the buttons above to see dynamic recommendations"}
-</p>
-        </div>
-          
+            💡 {lang === "zh" ? "点击上方按钮，推荐内容会动态变化" : "Click the buttons above to see dynamic recommendations"}
+          </p>
         </div>
 
         <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
@@ -1135,7 +1159,7 @@ export default function Home() {
                             )}
                           </button>
                         </div>
-                      </td>
+                       </td>
                       <td className={`px-4 py-3 ${theme.cell}`}>
                         {model.provider}
                       </td>
@@ -1177,7 +1201,7 @@ export default function Home() {
                         </span>
                       </td>
                       <td className={`px-4 py-3 ${theme.cell}`}>
-                        {model.useCase}
+                        {lang === "zh" ? model.useCase : getUseCaseEn(model.name)}
                       </td>
                       <td className="px-4 py-3">
                         <a
