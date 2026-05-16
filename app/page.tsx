@@ -168,6 +168,7 @@ const USE_CASE_FILTER_LABELS: Record<
 };
 
 const baseModels: Model[] = [
+  // ==================== OpenAI 完整系列 ====================
   {
     name: "GPT-5",
     provider: "OpenAI",
@@ -199,6 +200,16 @@ const baseModels: Model[] = [
     officialUrl: "https://openai.com",
   },
   {
+    name: "GPT-4 Turbo",
+    provider: "OpenAI",
+    inputPrice: 10.0,
+    outputPrice: 30.0,
+    context: "128K",
+    speed: "Fast",
+    useCase: "高精度任务",
+    officialUrl: "https://openai.com",
+  },
+  {
     name: "GPT-4.5",
     provider: "OpenAI",
     inputPrice: 75.0,
@@ -208,6 +219,28 @@ const baseModels: Model[] = [
     useCase: "复杂推理",
     officialUrl: "https://openai.com",
   },
+  {
+    name: "o1-preview",
+    provider: "OpenAI",
+    inputPrice: 15.0,
+    outputPrice: 60.0,
+    context: "128K",
+    speed: "Slow",
+    useCase: "深度推理",
+    officialUrl: "https://openai.com",
+  },
+  {
+    name: "o1-mini",
+    provider: "OpenAI",
+    inputPrice: 3.0,
+    outputPrice: 12.0,
+    context: "128K",
+    speed: "Medium",
+    useCase: "快速推理",
+    officialUrl: "https://openai.com",
+  },
+
+  // ==================== Anthropic 完整系列 ====================
   {
     name: "Claude 3.7 Sonnet",
     provider: "Anthropic",
@@ -239,6 +272,18 @@ const baseModels: Model[] = [
     officialUrl: "https://www.anthropic.com",
   },
   {
+    name: "Claude 3 Haiku",
+    provider: "Anthropic",
+    inputPrice: 0.25,
+    outputPrice: 1.25,
+    context: "200K",
+    speed: "Very Fast",
+    useCase: "高速低成本",
+    officialUrl: "https://www.anthropic.com",
+  },
+
+  // ==================== Google Gemini 完整系列 ====================
+  {
     name: "Gemini 2.5 Pro",
     provider: "Google",
     inputPrice: 1.25,
@@ -269,6 +314,18 @@ const baseModels: Model[] = [
     officialUrl: "https://ai.google.dev",
   },
   {
+    name: "Gemini 1.0 Pro",
+    provider: "Google",
+    inputPrice: 0.5,
+    outputPrice: 1.5,
+    context: "32K",
+    speed: "Fast",
+    useCase: "基础任务",
+    officialUrl: "https://ai.google.dev",
+  },
+
+  // ==================== DeepSeek 系列 ====================
+  {
     name: "DeepSeek V4",
     provider: "DeepSeek",
     inputPrice: 0.2,
@@ -289,6 +346,16 @@ const baseModels: Model[] = [
     officialUrl: "https://www.deepseek.com",
   },
   {
+    name: "DeepSeek V2.5",
+    provider: "DeepSeek",
+    inputPrice: 0.10,
+    outputPrice: 0.20,
+    context: "128K",
+    speed: "Fast",
+    useCase: "平衡版",
+    officialUrl: "https://www.deepseek.com",
+  },
+  {
     name: "DeepSeek R1",
     provider: "DeepSeek",
     inputPrice: 0.55,
@@ -298,6 +365,80 @@ const baseModels: Model[] = [
     useCase: "推理任务",
     officialUrl: "https://www.deepseek.com",
   },
+
+  // ==================== 中国模型 ====================
+  {
+    name: "GLM-4",
+    provider: "智谱AI",
+    inputPrice: 0.14,
+    outputPrice: 0.28,
+    context: "128K",
+    speed: "Fast",
+    useCase: "中文优化",
+    officialUrl: "https://zhipu.ai",
+  },
+  {
+    name: "GLM-4-Plus",
+    provider: "智谱AI",
+    inputPrice: 0.28,
+    outputPrice: 0.56,
+    context: "128K",
+    speed: "Fast",
+    useCase: "复杂中文",
+    officialUrl: "https://zhipu.ai",
+  },
+  {
+    name: "Qwen-Max",
+    provider: "阿里",
+    inputPrice: 0.28,
+    outputPrice: 0.56,
+    context: "128K",
+    speed: "Fast",
+    useCase: "多任务",
+    officialUrl: "https://tongyi.aliyun.com",
+  },
+  {
+    name: "Qwen-Plus",
+    provider: "阿里",
+    inputPrice: 0.14,
+    outputPrice: 0.28,
+    context: "128K",
+    speed: "Fast",
+    useCase: "性价比",
+    officialUrl: "https://tongyi.aliyun.com",
+  },
+  {
+    name: "ERNIE 4.0",
+    provider: "百度",
+    inputPrice: 0.56,
+    outputPrice: 1.12,
+    context: "128K",
+    speed: "Fast",
+    useCase: "中文理解",
+    officialUrl: "https://yiyan.baidu.com",
+  },
+  {
+    name: "ERNIE-3.5",
+    provider: "百度",
+    inputPrice: 0.28,
+    outputPrice: 0.56,
+    context: "128K",
+    speed: "Fast",
+    useCase: "轻量中文",
+    officialUrl: "https://yiyan.baidu.com",
+  },
+  {
+    name: "Yi-34B",
+    provider: "01.AI",
+    inputPrice: 0.30,
+    outputPrice: 0.60,
+    context: "32K",
+    speed: "Fast",
+    useCase: "开源中文",
+    officialUrl: "https://01.ai",
+  },
+
+  // ==================== Meta Llama 系列 ====================
   {
     name: "Llama 4",
     provider: "Meta",
@@ -310,7 +451,7 @@ const baseModels: Model[] = [
   },
   {
     name: "Llama 3.3 70B",
-    provider: "Groq",
+    provider: "Meta/Groq",
     inputPrice: 0.7,
     outputPrice: 0.8,
     context: "128K",
@@ -320,14 +461,16 @@ const baseModels: Model[] = [
   },
   {
     name: "Llama 3.1 405B",
-    provider: "Together AI",
+    provider: "Meta/Together",
     inputPrice: 5.0,
     outputPrice: 5.0,
     context: "128K",
     speed: "Medium",
     useCase: "超大模型",
-    officialUrl: "https://www.together.ai",
+    officialUrl: "https://together.ai",
   },
+
+  // ==================== Mistral 系列 ====================
   {
     name: "Mixtral 8x22B",
     provider: "Mistral",
@@ -339,6 +482,90 @@ const baseModels: Model[] = [
     officialUrl: "https://mistral.ai",
   },
   {
+    name: "Mistral Large",
+    provider: "Mistral",
+    inputPrice: 8.0,
+    outputPrice: 24.0,
+    context: "32K",
+    speed: "Fast",
+    useCase: "顶级开源",
+    officialUrl: "https://mistral.ai",
+  },
+  {
+    name: "Mistral Small",
+    provider: "Mistral",
+    inputPrice: 2.0,
+    outputPrice: 6.0,
+    context: "32K",
+    speed: "Fast",
+    useCase: "轻量高效",
+    officialUrl: "https://mistral.ai",
+  },
+  {
+    name: "Codestral",
+    provider: "Mistral",
+    inputPrice: 1.0,
+    outputPrice: 3.0,
+    context: "32K",
+    speed: "Fast",
+    useCase: "代码专用",
+    officialUrl: "https://mistral.ai",
+  },
+
+  // ==================== 推理加速平台 ====================
+  {
+    name: "Groq (Llama 3.3 70B)",
+    provider: "Groq",
+    inputPrice: 0.7,
+    outputPrice: 0.8,
+    context: "128K",
+    speed: "Very Fast",
+    useCase: "最快推理",
+    officialUrl: "https://groq.com",
+  },
+  {
+    name: "Fireworks AI (Llama 3)",
+    provider: "Fireworks",
+    inputPrice: 0.7,
+    outputPrice: 0.8,
+    context: "128K",
+    speed: "Very Fast",
+    useCase: "高速推理",
+    officialUrl: "https://fireworks.ai",
+  },
+  {
+    name: "Together AI (Llama 3.1)",
+    provider: "Together",
+    inputPrice: 5.0,
+    outputPrice: 5.0,
+    context: "128K",
+    speed: "Medium",
+    useCase: "超大模型",
+    officialUrl: "https://together.ai",
+  },
+  {
+    name: "Cerebras (Llama 3)",
+    provider: "Cerebras",
+    inputPrice: 0.6,
+    outputPrice: 0.7,
+    context: "128K",
+    speed: "Very Fast",
+    useCase: "专用硬件",
+    officialUrl: "https://cerebras.ai",
+  },
+  {
+    name: "SambaNova (Llama 3)",
+    provider: "SambaNova",
+    inputPrice: 0.5,
+    outputPrice: 0.6,
+    context: "128K",
+    speed: "Very Fast",
+    useCase: "高效推理",
+    officialUrl: "https://sambanova.ai",
+  },
+
+  // ==================== Cohere 系列 ====================
+  {
     name: "Command R+",
     provider: "Cohere",
     inputPrice: 2.5,
@@ -347,6 +574,164 @@ const baseModels: Model[] = [
     speed: "Medium",
     useCase: "RAG应用",
     officialUrl: "https://cohere.com",
+  },
+  {
+    name: "Command-R",
+    provider: "Cohere",
+    inputPrice: 1.5,
+    outputPrice: 5.0,
+    context: "128K",
+    speed: "Fast",
+    useCase: "RAG专用",
+    officialUrl: "https://cohere.com",
+  },
+
+  // ==================== AI21 系列 ====================
+  {
+    name: "Jamba-1.5",
+    provider: "AI21",
+    inputPrice: 2.0,
+    outputPrice: 8.0,
+    context: "256K",
+    speed: "Fast",
+    useCase: "长上下文",
+    officialUrl: "https://ai21.com",
+  },
+
+  // ==================== 图像生成模型 ====================
+  {
+    name: "DALL-E 3",
+    provider: "OpenAI",
+    inputPrice: 0.04,
+    outputPrice: 0.08,
+    context: "image",
+    speed: "Medium",
+    useCase: "高质量生图",
+    officialUrl: "https://openai.com",
+  },
+  {
+    name: "DALL-E 2",
+    provider: "OpenAI",
+    inputPrice: 0.02,
+    outputPrice: 0.04,
+    context: "image",
+    speed: "Fast",
+    useCase: "快速生图",
+    officialUrl: "https://openai.com",
+  },
+  {
+    name: "Stable Diffusion 3",
+    provider: "Stability",
+    inputPrice: 0.035,
+    outputPrice: 0.035,
+    context: "image",
+    speed: "Fast",
+    useCase: "开源生图",
+    officialUrl: "https://stability.ai",
+  },
+  {
+    name: "SDXL",
+    provider: "Stability",
+    inputPrice: 0.025,
+    outputPrice: 0.025,
+    context: "image",
+    speed: "Fast",
+    useCase: "基础生图",
+    officialUrl: "https://stability.ai",
+  },
+  {
+    name: "Flux Pro",
+    provider: "Flux",
+    inputPrice: 0.05,
+    outputPrice: 0.05,
+    context: "image",
+    speed: "Medium",
+    useCase: "高真实感",
+    officialUrl: "https://flux.ai",
+  },
+  {
+    name: "Midjourney API",
+    provider: "Midjourney",
+    inputPrice: 0.05,
+    outputPrice: 0.05,
+    context: "image",
+    speed: "Medium",
+    useCase: "艺术风格",
+    officialUrl: "https://midjourney.com",
+  },
+
+  // ==================== 嵌入/向量模型 ====================
+  {
+    name: "text-embedding-3-small",
+    provider: "OpenAI",
+    inputPrice: 0.02,
+    outputPrice: 0.02,
+    context: "embed",
+    speed: "Fast",
+    useCase: "通用嵌入",
+    officialUrl: "https://openai.com",
+  },
+  {
+    name: "text-embedding-3-large",
+    provider: "OpenAI",
+    inputPrice: 0.13,
+    outputPrice: 0.13,
+    context: "embed",
+    speed: "Fast",
+    useCase: "高精度嵌入",
+    officialUrl: "https://openai.com",
+  },
+  {
+    name: "voyage-2",
+    provider: "Voyage AI",
+    inputPrice: 0.04,
+    outputPrice: 0.04,
+    context: "embed",
+    speed: "Fast",
+    useCase: "RAG优化",
+    officialUrl: "https://voyage.ai",
+  },
+  {
+    name: "cohere-embed-v3",
+    provider: "Cohere",
+    inputPrice: 0.05,
+    outputPrice: 0.05,
+    context: "embed",
+    speed: "Fast",
+    useCase: "多语言嵌入",
+    officialUrl: "https://cohere.com",
+  },
+
+  // ==================== 音频/语音模型 ====================
+  {
+    name: "Whisper",
+    provider: "OpenAI",
+    inputPrice: 0.006,
+    outputPrice: 0.006,
+    context: "audio",
+    speed: "Fast",
+    useCase: "语音转文字",
+    officialUrl: "https://openai.com",
+  },
+  {
+    name: "TTS HD",
+    provider: "OpenAI",
+    inputPrice: 0.015,
+    outputPrice: 0.015,
+    context: "audio",
+    speed: "Fast",
+    useCase: "高质量语音",
+    officialUrl: "https://openai.com",
+  },
+  {
+    name: "ElevenLabs",
+    provider: "ElevenLabs",
+    inputPrice: 0.30,
+    outputPrice: 0.30,
+    context: "audio",
+    speed: "Fast",
+    useCase: "自然语音",
+    officialUrl: "https://elevenlabs.io",
   },
 ];
 
@@ -487,24 +872,85 @@ function formatPrice(price: number): string {
 // 获取英文用途
 function getUseCaseEn(modelName: string): string {
   const map: Record<string, string> = {
+    // OpenAI 系列
     "GPT-4o": "General/Coding",
     "GPT-4o mini": "Light tasks",
     "GPT-4.5": "Complex reasoning",
     "GPT-5": "Flagship general",
+    "GPT-4 Turbo": "High precision tasks",
+    "o1-preview": "Deep reasoning",
+    "o1-mini": "Fast reasoning",
+    "DALL-E 3": "High quality image generation",
+    "DALL-E 2": "Fast image generation",
+    "Whisper": "Speech to text",
+    "TTS HD": "High quality voice",
+    "text-embedding-3-small": "General embedding",
+    "text-embedding-3-large": "High precision embedding",
+    
+    // Anthropic 系列
     "Claude 3.5 Sonnet": "Complex tasks/Coding",
     "Claude 3.7 Sonnet": "Coding/Complex tasks",
     "Claude 3 Opus": "High-difficulty tasks",
+    "Claude 3 Haiku": "Fast & low cost",
+    
+    // Google 系列
     "Gemini 1.5 Pro": "Long context",
     "Gemini 1.5 Flash": "Fast response",
     "Gemini 2.5 Pro": "Multimodal/Long context",
+    "Gemini 1.0 Pro": "Basic tasks",
+    
+    // DeepSeek 系列
     "DeepSeek V3": "Best value",
     "DeepSeek V4": "Next-gen value",
+    "DeepSeek V2.5": "Balanced",
     "DeepSeek R1": "Reasoning tasks",
+    
+    // 中国模型
+    "GLM-4": "Chinese optimized",
+    "GLM-4-Plus": "Complex Chinese",
+    "Qwen-Max": "Multi-task",
+    "Qwen-Plus": "Best value",
+    "ERNIE 4.0": "Chinese understanding",
+    "ERNIE-3.5": "Lightweight Chinese",
+    "Yi-34B": "Open source Chinese",
+    
+    // Meta Llama 系列
     "Llama 4": "Open source flagship",
     "Llama 3.3 70B": "Real-time apps",
     "Llama 3.1 405B": "Giant model",
+    
+    // Mistral 系列
     "Mixtral 8x22B": "Open source choice",
+    "Mistral Large": "Top open source",
+    "Mistral Small": "Lightweight",
+    "Codestral": "Code specialized",
+    
+    // 推理加速平台
+    "Groq (Llama 3.3 70B)": "Fastest inference",
+    "Fireworks AI (Llama 3)": "High speed inference",
+    "Together AI (Llama 3.1)": "Giant model",
+    "Cerebras (Llama 3)": "Dedicated hardware",
+    "SambaNova (Llama 3)": "Efficient inference",
+    
+    // Cohere 系列
     "Command R+": "RAG apps",
+    "Command-R": "RAG specialized",
+    
+    // AI21
+    "Jamba-1.5": "Long context",
+    
+    // 图像生成
+    "Stable Diffusion 3": "Open source image",
+    "SDXL": "Basic image",
+    "Flux Pro": "High realism",
+    "Midjourney API": "Artistic style",
+    
+    // 嵌入模型
+    "voyage-2": "RAG optimized",
+    "cohere-embed-v3": "Multilingual embedding",
+    
+    // 音频
+    "ElevenLabs": "Natural voice",
   };
   return map[modelName] || modelName;
 }
