@@ -486,6 +486,7 @@ function formatPrice(price: number): string {
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("zh");
+  const [recommendType, setRecommendType] = useState<string>("cheapest");
   const [isDark, setIsDark] = useState(true);
   const [copiedName, setCopiedName] = useState<string | null>(null);
   const [liveModels, setLiveModels] = useState<LiveModel[]>(() =>
