@@ -808,7 +808,9 @@ export default function Home() {
               <div className="p-4 rounded-lg bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🏆</span>
-                  <span className="font-bold text-green-500">Top Pick: 最便宜</span>
+                  <span className="font-bold text-green-500">
+  {lang === "zh" ? "🏆 首选：最便宜" : "🏆 Top Pick: Cheapest"}
+</span>
                 </div>
                 <div className="text-xl font-semibold">Gemini 1.5 Flash</div>
                 <div className={`text-sm ${theme.muted}`}>Google</div>
@@ -823,7 +825,9 @@ export default function Home() {
               <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🥈</span>
-                  <span className="font-bold text-blue-500">Runner Up</span>
+                  <span className="font-bold text-blue-500">
+  {lang === "zh" ? "亚军" : "Runner Up"}
+</span>
                 </div>
                 <div className="text-xl font-semibold">DeepSeek V3</div>
                 <div className={`text-sm ${theme.muted}`}>DeepSeek</div>
@@ -831,7 +835,9 @@ export default function Home() {
                   <span className="text-green-500">输入: $0.14/M</span>
                   <span className="text-yellow-500">输出: $0.28/M</span>
                 </div>
-                <div className={`text-xs mt-2 ${theme.muted}`}>📈 极低的输入成本，强大的通用能力</div>
+                <div className={`text-xs mt-2 ${theme.muted}`}>
+  {lang === "zh" ? "📈 极低的输入成本，强大的通用能力" : "📈 Ultra-low input cost, strong general capability"}
+</div>
               </div>
             </div>
           )}
@@ -841,7 +847,9 @@ export default function Home() {
               <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🏆</span>
-                  <span className="font-bold text-blue-500">Top Pick: 最快速度</span>
+                  <span className="font-bold text-blue-500">
+  {lang === "zh" ? "🏆 首选：最快速度" : "🏆 Top Pick: Fastest"}
+</span>
                 </div>
                 <div className="text-xl font-semibold">Groq (Llama 3.3 70B)</div>
                 <div className={`text-sm ${theme.muted}`}>Groq</div>
@@ -856,7 +864,9 @@ export default function Home() {
               <div className="p-4 rounded-lg bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🥈</span>
-                  <span className="font-bold text-green-500">性价比之选</span>
+                  <span className="font-bold text-green-500">
+  {lang === "zh" ? "性价比之选" : "Value Pick"}
+</span>
                 </div>
                 <div className="text-xl font-semibold">Gemini 1.5 Flash</div>
                 <div className={`text-sm ${theme.muted}`}>Google</div>
@@ -876,7 +886,9 @@ export default function Home() {
               <div className="p-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🏆</span>
-                  <span className="font-bold text-purple-500">Top Pick: 最佳编程</span>
+                  <span className="font-bold text-purple-500">
+  {lang === "zh" ? "🏆 首选：最佳编程" : "🏆 Top Pick: Best Coding"}
+</span>
                 </div>
                 <div className="text-xl font-semibold">Claude 3.7 Sonnet</div>
                 <div className={`text-sm ${theme.muted}`}>Anthropic</div>
@@ -891,7 +903,9 @@ export default function Home() {
               <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🥈</span>
-                  <span className="font-bold text-blue-500">全能选手</span>
+                  <span className="font-bold text-blue-500">
+  {lang === "zh" ? "全能选手" : "All-Rounder"}
+</span>
                 </div>
                 <div className="text-xl font-semibold">GPT-4o</div>
                 <div className={`text-sm ${theme.muted}`}>OpenAI</div>
@@ -911,7 +925,9 @@ export default function Home() {
               <div className="p-4 rounded-lg bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🏆</span>
-                  <span className="font-bold text-orange-500">Top Pick: 最长上下文</span>
+                  <span className="font-bold text-orange-500">
+  {lang === "zh" ? "🏆 首选：最长上下文" : "🏆 Top Pick: Longest Context"}
+</span>
                 </div>
                 <div className="text-xl font-semibold">Gemini 1.5 Pro</div>
                 <div className={`text-sm ${theme.muted}`}>Google</div>
@@ -926,7 +942,9 @@ export default function Home() {
               <div className="p-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🥈</span>
-                  <span className="font-bold text-purple-500">多模态之选</span>
+                  <span className="font-bold text-purple-500">
+  {lang === "zh" ? "多模态之选" : "Multimodal Pick"}
+</span>
                 </div>
                 <div className="text-xl font-semibold">Gemini 2.5 Pro</div>
                 <div className={`text-sm ${theme.muted}`}>Google</div>
@@ -942,8 +960,8 @@ export default function Home() {
           )}
 
           <p className={`text-center text-xs ${theme.muted} mt-6`}>
-            💡 点击上方按钮，推荐内容会动态变化
-          </p>
+  💡 {lang === "zh" ? "点击上方按钮，推荐内容会动态变化" : "Click the buttons above to see dynamic recommendations"}
+</p>
         </div>
           
         </div>
