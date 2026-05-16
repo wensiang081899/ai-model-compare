@@ -768,7 +768,7 @@ export default function Home() {
                   : "bg-green-500/10 text-green-500 border border-green-500/20 hover:bg-green-500/20"
               }`}
             >
-              💰 最便宜
+              💰 {lang === "zh" ? "最便宜" : "Cheapest"}
             </button>
             <button
               onClick={() => setRecommendType("fastest")}
@@ -778,7 +778,7 @@ export default function Home() {
                   : "bg-blue-500/10 text-blue-500 border border-blue-500/20 hover:bg-blue-500/20"
               }`}
             >
-              ⚡ 最快速度
+              ⚡ {lang === "zh" ? "最快速度" : "Fastest"}
             </button>
             <button
               onClick={() => setRecommendType("coding")}
@@ -788,7 +788,7 @@ export default function Home() {
                   : "bg-purple-500/10 text-purple-500 border border-purple-500/20 hover:bg-purple-500/20"
               }`}
             >
-              🧠 最佳编程
+              🧠 {lang === "zh" ? "最佳编程" : "Best Coding"}
             </button>
             <button
               onClick={() => setRecommendType("context")}
@@ -798,7 +798,7 @@ export default function Home() {
                   : "bg-orange-500/10 text-orange-500 border border-orange-500/20 hover:bg-orange-500/20"
               }`}
             >
-              📚 最长上下文
+              📚 {lang === "zh" ? "最长上下文" : "Longest Context"}
             </button>
           </div>
 
@@ -816,7 +816,9 @@ export default function Home() {
                   <span className="text-green-500">输入: $0.075/M</span>
                   <span className="text-yellow-500">输出: $0.30/M</span>
                 </div>
-                <div className={`text-xs mt-2 ${theme.muted}`}>💰 性价比之王，适合大规模、成本敏感的应用</div>
+                <div className={`text-xs mt-2 ${theme.muted}`}>
+  {lang === "zh" ? "💰 性价比之王，适合大规模、成本敏感的应用" : "💰 Best value for large-scale, cost-sensitive applications"}
+</div>
               </div>
               <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
                 <div className="flex items-center gap-2 mb-2">
@@ -847,7 +849,9 @@ export default function Home() {
                   <span className="text-green-500">输入: $0.70/M</span>
                   <span className="text-yellow-500">输出: $0.80/M</span>
                 </div>
-                <div className={`text-xs mt-2 ${theme.muted}`}>⚡ 专门的推理加速硬件，极低延迟</div>
+                <div className={`text-xs mt-2 ${theme.muted}`}>
+  {lang === "zh" ? "⚡ 专门的推理加速硬件，极低延迟" : "⚡ Dedicated inference acceleration hardware, ultra-low latency"}
+</div>
               </div>
               <div className="p-4 rounded-lg bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20">
                 <div className="flex items-center gap-2 mb-2">
@@ -860,7 +864,9 @@ export default function Home() {
                   <span className="text-green-500">输入: $0.075/M</span>
                   <span className="text-yellow-500">输出: $0.30/M</span>
                 </div>
-                <div className={`text-xs mt-2 ${theme.muted}`}>⚡ 快速响应 + 极低成本，最佳平衡</div>
+                <div className={`text-xs mt-2 ${theme.muted}`}>
+  {lang === "zh" ? "⚡ 快速响应 + 极低成本，最佳平衡" : "⚡ Fast response + ultra-low cost, best balance"}
+</div>
               </div>
             </div>
           )}
@@ -878,7 +884,9 @@ export default function Home() {
                   <span className="text-green-500">输入: $3.00/M</span>
                   <span className="text-yellow-500">输出: $15.00/M</span>
                 </div>
-                <div className={`text-xs mt-2 ${theme.muted}`}>🧠 公认最强的代码生成和理解能力</div>
+                <div className={`text-xs mt-2 ${theme.muted}`}>
+  {lang === "zh" ? "🧠 公认最强的代码生成和理解能力" : "🧠 Recognized as the strongest code generation and understanding"}
+</div>
               </div>
               <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
                 <div className="flex items-center gap-2 mb-2">
@@ -891,7 +899,9 @@ export default function Home() {
                   <span className="text-green-500">输入: $2.50/M</span>
                   <span className="text-yellow-500">输出: $10.00/M</span>
                 </div>
-                <div className={`text-xs mt-2 ${theme.muted}`}>💻 强大的编程能力 + 多模态支持</div>
+                <div className={`text-xs mt-2 ${theme.muted}`}>
+  {lang === "zh" ? "💻 强大的编程能力 + 多模态支持" : "💻 Strong coding ability + multimodal support"}
+</div>
               </div>
             </div>
           )}
@@ -909,7 +919,9 @@ export default function Home() {
                   <span className="text-green-500">输入: $1.25/M</span>
                   <span className="text-yellow-500">输出: $5.00/M</span>
                 </div>
-                <div className={`text-xs mt-2 ${theme.muted}`}>📚 200万 Token 上下文，可处理整本书</div>
+                <div className={`text-xs mt-2 ${theme.muted}`}>
+  {lang === "zh" ? "📚 200万 Token 上下文，可处理整本书" : "📚 2M token context, can process entire books"}
+</div>
               </div>
               <div className="p-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20">
                 <div className="flex items-center gap-2 mb-2">
@@ -922,7 +934,9 @@ export default function Home() {
                   <span className="text-green-500">输入: $1.25/M</span>
                   <span className="text-yellow-500">输出: $10.00/M</span>
                 </div>
-                <div className={`text-xs mt-2 ${theme.muted}`}>🎯 100万 Token + 多模态理解</div>
+                <div className={`text-xs mt-2 ${theme.muted}`}>
+  {lang === "zh" ? "🎯 100万 Token + 多模态理解" : "🎯 1M token context + multimodal understanding"}
+</div>
               </div>
             </div>
           )}
