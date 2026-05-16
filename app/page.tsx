@@ -705,8 +705,6 @@ export default function Home() {
           </div>
         </div>
 
-        </div>
-
         {/* Why Use Us 区块 */}
         <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
           <h2 className="text-xl font-semibold mb-6 text-center">Why Inferly?</h2>
