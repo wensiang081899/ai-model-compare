@@ -14,6 +14,8 @@ import {
 
 type Lang = "zh" | "en";
 
+type ModelCategory = "all" | "text" | "image" | "embedding" | "audio";
+
 type Model = {
   name: string;
   provider: string;
@@ -23,6 +25,7 @@ type Model = {
   speed: string;
   useCase: string;
   officialUrl: string;
+  category: ModelCategory;
 };
 
 type PriceTrend = "up" | "down" | "flat";
@@ -73,6 +76,11 @@ const translations = {
     filterLongContext: "长上下文",
     filterValue: "性价比",
     filterFast: "快速响应",
+    categoryAll: "全部类型",
+    categoryText: "🔤 文本生成",
+    categoryImage: "🖼️ 图像生成",
+    categoryEmbedding: "📊 嵌入/向量",
+    categoryAudio: "🎤 音频/语音",
     showingModels: (shown: number, total: number) =>
       `显示 ${shown} / ${total} 个模型`,
     thModel: "模型",
@@ -125,6 +133,11 @@ const translations = {
     filterLongContext: "Long context",
     filterValue: "Best value",
     filterFast: "Fast response",
+    categoryAll: "All Types",
+    categoryText: "🔤 Text Generation",
+    categoryImage: "🖼️ Image Generation",
+    categoryEmbedding: "📊 Embedding/Vector",
+    categoryAudio: "🎤 Audio/Speech",
     showingModels: (shown: number, total: number) =>
       `Showing ${shown} / ${total} models`,
     thModel: "Model",
@@ -168,7 +181,7 @@ const USE_CASE_FILTER_LABELS: Record<
 };
 
 const baseModels: Model[] = [
-  // ==================== OpenAI 完整系列 ====================
+  // ==================== OpenAI 文本系列 ====================
   {
     name: "GPT-5",
     provider: "OpenAI",
@@ -178,6 +191,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "旗舰通用",
     officialUrl: "https://openai.com",
+    category: "text",
   },
   {
     name: "GPT-4o",
@@ -188,6 +202,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "通用/Coding",
     officialUrl: "https://openai.com",
+    category: "text",
   },
   {
     name: "GPT-4o mini",
@@ -198,6 +213,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "轻量任务",
     officialUrl: "https://openai.com",
+    category: "text",
   },
   {
     name: "GPT-4 Turbo",
@@ -208,6 +224,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "高精度任务",
     officialUrl: "https://openai.com",
+    category: "text",
   },
   {
     name: "GPT-4.5",
@@ -218,6 +235,7 @@ const baseModels: Model[] = [
     speed: "Medium",
     useCase: "复杂推理",
     officialUrl: "https://openai.com",
+    category: "text",
   },
   {
     name: "o1-preview",
@@ -228,6 +246,7 @@ const baseModels: Model[] = [
     speed: "Slow",
     useCase: "深度推理",
     officialUrl: "https://openai.com",
+    category: "text",
   },
   {
     name: "o1-mini",
@@ -238,9 +257,10 @@ const baseModels: Model[] = [
     speed: "Medium",
     useCase: "快速推理",
     officialUrl: "https://openai.com",
+    category: "text",
   },
 
-  // ==================== Anthropic 完整系列 ====================
+  // ==================== Anthropic 文本系列 ====================
   {
     name: "Claude 3.7 Sonnet",
     provider: "Anthropic",
@@ -250,6 +270,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "Coding/复杂任务",
     officialUrl: "https://www.anthropic.com",
+    category: "text",
   },
   {
     name: "Claude 3.5 Sonnet",
@@ -260,6 +281,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "复杂任务/Coding",
     officialUrl: "https://www.anthropic.com",
+    category: "text",
   },
   {
     name: "Claude 3 Opus",
@@ -270,6 +292,7 @@ const baseModels: Model[] = [
     speed: "Medium",
     useCase: "高难度任务",
     officialUrl: "https://www.anthropic.com",
+    category: "text",
   },
   {
     name: "Claude 3 Haiku",
@@ -280,9 +303,10 @@ const baseModels: Model[] = [
     speed: "Very Fast",
     useCase: "高速低成本",
     officialUrl: "https://www.anthropic.com",
+    category: "text",
   },
 
-  // ==================== Google Gemini 完整系列 ====================
+  // ==================== Google 文本系列 ====================
   {
     name: "Gemini 2.5 Pro",
     provider: "Google",
@@ -292,6 +316,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "多模态/长上下文",
     officialUrl: "https://ai.google.dev",
+    category: "text",
   },
   {
     name: "Gemini 1.5 Pro",
@@ -302,6 +327,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "长上下文",
     officialUrl: "https://ai.google.dev",
+    category: "text",
   },
   {
     name: "Gemini 1.5 Flash",
@@ -312,6 +338,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "快速响应",
     officialUrl: "https://ai.google.dev",
+    category: "text",
   },
   {
     name: "Gemini 1.0 Pro",
@@ -322,9 +349,10 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "基础任务",
     officialUrl: "https://ai.google.dev",
+    category: "text",
   },
 
-  // ==================== DeepSeek 系列 ====================
+  // ==================== DeepSeek 文本系列 ====================
   {
     name: "DeepSeek V4",
     provider: "DeepSeek",
@@ -334,6 +362,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "新一代性价比",
     officialUrl: "https://www.deepseek.com",
+    category: "text",
   },
   {
     name: "DeepSeek V3",
@@ -344,6 +373,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "性价比之王",
     officialUrl: "https://www.deepseek.com",
+    category: "text",
   },
   {
     name: "DeepSeek V2.5",
@@ -354,6 +384,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "平衡版",
     officialUrl: "https://www.deepseek.com",
+    category: "text",
   },
   {
     name: "DeepSeek R1",
@@ -364,6 +395,7 @@ const baseModels: Model[] = [
     speed: "Medium",
     useCase: "推理任务",
     officialUrl: "https://www.deepseek.com",
+    category: "text",
   },
 
   // ==================== 中国模型 ====================
@@ -376,6 +408,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "中文优化",
     officialUrl: "https://zhipu.ai",
+    category: "text",
   },
   {
     name: "GLM-4-Plus",
@@ -386,6 +419,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "复杂中文",
     officialUrl: "https://zhipu.ai",
+    category: "text",
   },
   {
     name: "Qwen-Max",
@@ -396,6 +430,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "多任务",
     officialUrl: "https://tongyi.aliyun.com",
+    category: "text",
   },
   {
     name: "Qwen-Plus",
@@ -406,6 +441,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "性价比",
     officialUrl: "https://tongyi.aliyun.com",
+    category: "text",
   },
   {
     name: "ERNIE 4.0",
@@ -416,6 +452,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "中文理解",
     officialUrl: "https://yiyan.baidu.com",
+    category: "text",
   },
   {
     name: "ERNIE-3.5",
@@ -426,19 +463,21 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "轻量中文",
     officialUrl: "https://yiyan.baidu.com",
+    category: "text",
   },
   {
     name: "Yi-34B",
-    provider: "01.AI",
+    provider: "零一万物",
     inputPrice: 0.30,
     outputPrice: 0.60,
     context: "32K",
     speed: "Fast",
     useCase: "开源中文",
     officialUrl: "https://01.ai",
+    category: "text",
   },
 
-  // ==================== Meta Llama 系列 ====================
+  // ==================== Meta Llama 文本系列 ====================
   {
     name: "Llama 4",
     provider: "Meta",
@@ -448,29 +487,32 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "开源旗舰",
     officialUrl: "https://ai.meta.com",
+    category: "text",
   },
   {
     name: "Llama 3.3 70B",
-    provider: "Meta/Groq",
+    provider: "Groq",
     inputPrice: 0.7,
     outputPrice: 0.8,
     context: "128K",
     speed: "Very Fast",
     useCase: "实时应用",
     officialUrl: "https://groq.com",
+    category: "text",
   },
   {
     name: "Llama 3.1 405B",
-    provider: "Meta/Together",
+    provider: "Together AI",
     inputPrice: 5.0,
     outputPrice: 5.0,
     context: "128K",
     speed: "Medium",
     useCase: "超大模型",
     officialUrl: "https://together.ai",
+    category: "text",
   },
 
-  // ==================== Mistral 系列 ====================
+  // ==================== Mistral 文本系列 ====================
   {
     name: "Mixtral 8x22B",
     provider: "Mistral",
@@ -480,6 +522,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "开源首选",
     officialUrl: "https://mistral.ai",
+    category: "text",
   },
   {
     name: "Mistral Large",
@@ -490,6 +533,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "顶级开源",
     officialUrl: "https://mistral.ai",
+    category: "text",
   },
   {
     name: "Mistral Small",
@@ -500,6 +544,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "轻量高效",
     officialUrl: "https://mistral.ai",
+    category: "text",
   },
   {
     name: "Codestral",
@@ -510,6 +555,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "代码专用",
     officialUrl: "https://mistral.ai",
+    category: "text",
   },
 
   // ==================== 推理加速平台 ====================
@@ -522,9 +568,10 @@ const baseModels: Model[] = [
     speed: "Very Fast",
     useCase: "最快推理",
     officialUrl: "https://groq.com",
+    category: "text",
   },
   {
-    name: "Fireworks AI (Llama 3)",
+    name: "Fireworks AI",
     provider: "Fireworks",
     inputPrice: 0.7,
     outputPrice: 0.8,
@@ -532,19 +579,10 @@ const baseModels: Model[] = [
     speed: "Very Fast",
     useCase: "高速推理",
     officialUrl: "https://fireworks.ai",
+    category: "text",
   },
   {
-    name: "Together AI (Llama 3.1)",
-    provider: "Together",
-    inputPrice: 5.0,
-    outputPrice: 5.0,
-    context: "128K",
-    speed: "Medium",
-    useCase: "超大模型",
-    officialUrl: "https://together.ai",
-  },
-  {
-    name: "Cerebras (Llama 3)",
+    name: "Cerebras",
     provider: "Cerebras",
     inputPrice: 0.6,
     outputPrice: 0.7,
@@ -552,9 +590,10 @@ const baseModels: Model[] = [
     speed: "Very Fast",
     useCase: "专用硬件",
     officialUrl: "https://cerebras.ai",
+    category: "text",
   },
   {
-    name: "SambaNova (Llama 3)",
+    name: "SambaNova",
     provider: "SambaNova",
     inputPrice: 0.5,
     outputPrice: 0.6,
@@ -562,9 +601,10 @@ const baseModels: Model[] = [
     speed: "Very Fast",
     useCase: "高效推理",
     officialUrl: "https://sambanova.ai",
+    category: "text",
   },
 
-  // ==================== Cohere 系列 ====================
+  // ==================== Cohere 文本系列 ====================
   {
     name: "Command R+",
     provider: "Cohere",
@@ -574,6 +614,7 @@ const baseModels: Model[] = [
     speed: "Medium",
     useCase: "RAG应用",
     officialUrl: "https://cohere.com",
+    category: "text",
   },
   {
     name: "Command-R",
@@ -584,9 +625,10 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "RAG专用",
     officialUrl: "https://cohere.com",
+    category: "text",
   },
 
-  // ==================== AI21 系列 ====================
+  // ==================== AI21 文本系列 ====================
   {
     name: "Jamba-1.5",
     provider: "AI21",
@@ -596,6 +638,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "长上下文",
     officialUrl: "https://ai21.com",
+    category: "text",
   },
 
   // ==================== 图像生成模型 ====================
@@ -608,6 +651,7 @@ const baseModels: Model[] = [
     speed: "Medium",
     useCase: "高质量生图",
     officialUrl: "https://openai.com",
+    category: "image",
   },
   {
     name: "DALL-E 2",
@@ -618,26 +662,29 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "快速生图",
     officialUrl: "https://openai.com",
+    category: "image",
   },
   {
     name: "Stable Diffusion 3",
-    provider: "Stability",
+    provider: "Stability AI",
     inputPrice: 0.035,
     outputPrice: 0.035,
     context: "image",
     speed: "Fast",
     useCase: "开源生图",
     officialUrl: "https://stability.ai",
+    category: "image",
   },
   {
     name: "SDXL",
-    provider: "Stability",
+    provider: "Stability AI",
     inputPrice: 0.025,
     outputPrice: 0.025,
     context: "image",
     speed: "Fast",
     useCase: "基础生图",
     officialUrl: "https://stability.ai",
+    category: "image",
   },
   {
     name: "Flux Pro",
@@ -648,9 +695,10 @@ const baseModels: Model[] = [
     speed: "Medium",
     useCase: "高真实感",
     officialUrl: "https://flux.ai",
+    category: "image",
   },
   {
-    name: "Midjourney API",
+    name: "Midjourney",
     provider: "Midjourney",
     inputPrice: 0.05,
     outputPrice: 0.05,
@@ -658,6 +706,7 @@ const baseModels: Model[] = [
     speed: "Medium",
     useCase: "艺术风格",
     officialUrl: "https://midjourney.com",
+    category: "image",
   },
 
   // ==================== 嵌入/向量模型 ====================
@@ -670,6 +719,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "通用嵌入",
     officialUrl: "https://openai.com",
+    category: "embedding",
   },
   {
     name: "text-embedding-3-large",
@@ -680,6 +730,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "高精度嵌入",
     officialUrl: "https://openai.com",
+    category: "embedding",
   },
   {
     name: "voyage-2",
@@ -690,6 +741,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "RAG优化",
     officialUrl: "https://voyage.ai",
+    category: "embedding",
   },
   {
     name: "cohere-embed-v3",
@@ -700,6 +752,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "多语言嵌入",
     officialUrl: "https://cohere.com",
+    category: "embedding",
   },
 
   // ==================== 音频/语音模型 ====================
@@ -712,6 +765,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "语音转文字",
     officialUrl: "https://openai.com",
+    category: "audio",
   },
   {
     name: "TTS HD",
@@ -722,6 +776,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "高质量语音",
     officialUrl: "https://openai.com",
+    category: "audio",
   },
   {
     name: "ElevenLabs",
@@ -732,6 +787,7 @@ const baseModels: Model[] = [
     speed: "Fast",
     useCase: "自然语音",
     officialUrl: "https://elevenlabs.io",
+    category: "audio",
   },
 ];
 
@@ -872,7 +928,6 @@ function formatPrice(price: number): string {
 // 获取英文用途
 function getUseCaseEn(modelName: string): string {
   const map: Record<string, string> = {
-    // OpenAI 系列
     "GPT-4o": "General/Coding",
     "GPT-4o mini": "Light tasks",
     "GPT-4.5": "Complex reasoning",
@@ -880,32 +935,18 @@ function getUseCaseEn(modelName: string): string {
     "GPT-4 Turbo": "High precision tasks",
     "o1-preview": "Deep reasoning",
     "o1-mini": "Fast reasoning",
-    "DALL-E 3": "High quality image generation",
-    "DALL-E 2": "Fast image generation",
-    "Whisper": "Speech to text",
-    "TTS HD": "High quality voice",
-    "text-embedding-3-small": "General embedding",
-    "text-embedding-3-large": "High precision embedding",
-    
-    // Anthropic 系列
     "Claude 3.5 Sonnet": "Complex tasks/Coding",
     "Claude 3.7 Sonnet": "Coding/Complex tasks",
     "Claude 3 Opus": "High-difficulty tasks",
     "Claude 3 Haiku": "Fast & low cost",
-    
-    // Google 系列
     "Gemini 1.5 Pro": "Long context",
     "Gemini 1.5 Flash": "Fast response",
     "Gemini 2.5 Pro": "Multimodal/Long context",
     "Gemini 1.0 Pro": "Basic tasks",
-    
-    // DeepSeek 系列
     "DeepSeek V3": "Best value",
     "DeepSeek V4": "Next-gen value",
     "DeepSeek V2.5": "Balanced",
     "DeepSeek R1": "Reasoning tasks",
-    
-    // 中国模型
     "GLM-4": "Chinese optimized",
     "GLM-4-Plus": "Complex Chinese",
     "Qwen-Max": "Multi-task",
@@ -913,46 +954,64 @@ function getUseCaseEn(modelName: string): string {
     "ERNIE 4.0": "Chinese understanding",
     "ERNIE-3.5": "Lightweight Chinese",
     "Yi-34B": "Open source Chinese",
-    
-    // Meta Llama 系列
     "Llama 4": "Open source flagship",
     "Llama 3.3 70B": "Real-time apps",
     "Llama 3.1 405B": "Giant model",
-    
-    // Mistral 系列
     "Mixtral 8x22B": "Open source choice",
     "Mistral Large": "Top open source",
     "Mistral Small": "Lightweight",
     "Codestral": "Code specialized",
-    
-    // 推理加速平台
     "Groq (Llama 3.3 70B)": "Fastest inference",
-    "Fireworks AI (Llama 3)": "High speed inference",
-    "Together AI (Llama 3.1)": "Giant model",
-    "Cerebras (Llama 3)": "Dedicated hardware",
-    "SambaNova (Llama 3)": "Efficient inference",
-    
-    // Cohere 系列
+    "Fireworks AI": "High speed inference",
+    "Cerebras": "Dedicated hardware",
+    "SambaNova": "Efficient inference",
     "Command R+": "RAG apps",
     "Command-R": "RAG specialized",
-    
-    // AI21
     "Jamba-1.5": "Long context",
-    
-    // 图像生成
+    "DALL-E 3": "High quality image",
+    "DALL-E 2": "Fast image",
     "Stable Diffusion 3": "Open source image",
     "SDXL": "Basic image",
     "Flux Pro": "High realism",
-    "Midjourney API": "Artistic style",
-    
-    // 嵌入模型
+    "Midjourney": "Artistic style",
+    "text-embedding-3-small": "General embedding",
+    "text-embedding-3-large": "High precision embedding",
     "voyage-2": "RAG optimized",
     "cohere-embed-v3": "Multilingual embedding",
-    
-    // 音频
+    "Whisper": "Speech to text",
+    "TTS HD": "High quality voice",
     "ElevenLabs": "Natural voice",
   };
   return map[modelName] || modelName;
+}
+
+// 获取英文提供商名称
+function getProviderEn(provider: string): string {
+  const map: Record<string, string> = {
+    "智谱AI": "Zhipu AI",
+    "阿里": "Alibaba",
+    "百度": "Baidu",
+    "零一万物": "01.AI",
+    "OpenAI": "OpenAI",
+    "Anthropic": "Anthropic",
+    "Google": "Google",
+    "DeepSeek": "DeepSeek",
+    "Meta": "Meta",
+    "Mistral": "Mistral",
+    "Cohere": "Cohere",
+    "AI21": "AI21",
+    "Groq": "Groq",
+    "Together AI": "Together AI",
+    "Fireworks": "Fireworks",
+    "Cerebras": "Cerebras",
+    "SambaNova": "SambaNova",
+    "Stability AI": "Stability AI",
+    "Flux": "Flux",
+    "Midjourney": "Midjourney",
+    "Voyage AI": "Voyage AI",
+    "ElevenLabs": "ElevenLabs",
+  };
+  return map[provider] || provider;
 }
 
 export default function Home() {
@@ -966,6 +1025,7 @@ export default function Home() {
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [useCaseFilter, setUseCaseFilter] = useState<UseCaseFilter>("all");
+  const [categoryFilter, setCategoryFilter] = useState<ModelCategory>("all");
   const [monthlyUsageM, setMonthlyUsageM] = useState<string>("10");
 
   const t = translations[lang];
@@ -1005,6 +1065,7 @@ export default function Home() {
   const filteredModels = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     return liveModels.filter((model) => {
+      if (categoryFilter !== "all" && model.category !== categoryFilter) return false;
       if (!matchesUseCaseFilter(model, useCaseFilter)) return false;
       if (!q) return true;
       return (
@@ -1013,7 +1074,7 @@ export default function Home() {
         model.useCase.toLowerCase().includes(q)
       );
     });
-  }, [liveModels, searchQuery, useCaseFilter]);
+  }, [liveModels, searchQuery, useCaseFilter, categoryFilter]);
 
   const usageM = parseFloat(monthlyUsageM) || 0;
 
@@ -1497,7 +1558,7 @@ export default function Home() {
                     <th className="text-right py-2 px-2">
                       {t.calcMonthlyCost}
                     </th>
-                  </tr>
+                  </td>
                 </thead>
                 <tbody>
                   {costRankings.map((item) => (
@@ -1531,6 +1592,17 @@ export default function Home() {
               className={`w-full pl-10 pr-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 ${theme.input}`}
             />
           </div>
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value as ModelCategory)}
+            className={`sm:w-40 px-3 py-2.5 rounded-lg border focus:outline-none focus:ring-2 ${theme.select}`}
+          >
+            <option value="all">{t.categoryAll}</option>
+            <option value="text">{t.categoryText}</option>
+            <option value="image">{t.categoryImage}</option>
+            <option value="embedding">{t.categoryEmbedding}</option>
+            <option value="audio">{t.categoryAudio}</option>
+          </select>
           <select
             value={useCaseFilter}
             onChange={(e) =>
@@ -1605,9 +1677,9 @@ export default function Home() {
                             )}
                           </button>
                         </div>
-                       </td>
+                      </td>
                       <td className={`px-4 py-3 ${theme.cell}`}>
-                        {model.provider}
+                        {lang === "zh" ? model.provider : getProviderEn(model.provider)}
                       </td>
                       <td className="px-4 py-3 text-green-500">
                         <div className="inline-flex items-center flex-wrap">
