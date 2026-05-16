@@ -15,9 +15,14 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Benchplane — AI model pricing",
-  description:
-    "Compare illustrative API pricing for frontier AI models. Filter, sort by cheapest, and scan context limits in one dark, responsive dashboard.",
+  title: "AI TOKEN - AI模型价格对比 | 找最划算的AI模型",
+  description: "对比GPT-5、Claude 3.7、Gemini、DeepSeek、Llama等18+主流AI模型的价格、速度、上下文。支持中英文、成本计算器、价格趋势分析。帮你找到最适合的AI模型。",
+  keywords: "AI, 模型, 价格对比, GPT-5, Claude, Gemini, DeepSeek, Llama, 成本计算, AI比价",
+  authors: [{ name: "AI TOKEN" }],
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -26,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="zh-CN" className="dark">
       <body
         className={`${dmSans.variable} ${spaceGrotesk.variable} min-h-screen antialiased`}
       >
