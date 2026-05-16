@@ -625,11 +625,11 @@ export default function Home() {
     Inferly
   </h1>
   <p className="text-xl mt-2 text-gray-300 max-w-2xl">
-    Find the cheapest AI model instantly.
-  </p>
-  <p className="text-md mt-1 text-gray-400">
-    Compare pricing, speed, and performance across top AI providers.
-  </p>
+  {lang === "zh" ? "瞬间找到最便宜的AI模型" : "Find the cheapest AI model instantly."}
+</p>
+<p className="text-md mt-1 text-gray-400">
+  {lang === "zh" ? "对比顶级AI提供商的价格、速度和性能" : "Compare pricing, speed, and performance across top AI providers."}
+</p>
 </div>
             <div className="flex items-center gap-2 shrink-0">
               <button
@@ -708,27 +708,45 @@ export default function Home() {
 
         {/* Why Use Us 区块 */}
         <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
-          <h2 className="text-xl font-semibold mb-6 text-center">Why Inferly?</h2>
+         <h2 className="text-xl font-semibold mb-6 text-center">
+  {lang === "zh" ? "为什么选择 Inferly？" : "Why Inferly?"}
+</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="text-center p-3">
               <div className="text-2xl mb-2">💰</div>
-              <div className="font-bold text-green-500">Save AI costs</div>
-              <div className={`text-xs mt-1 ${theme.muted}`}>Compare prices across providers</div>
+              <div className="font-bold text-green-500">
+  {lang === "zh" ? "节省AI成本" : "Save AI costs"}
+</div>
+<div className={`text-xs mt-1 ${theme.muted}`}>
+  {lang === "zh" ? "跨提供商对比价格" : "Compare prices across providers"}
+</div>
             </div>
             <div className="text-center p-3">
               <div className="text-2xl mb-2">⚡</div>
-              <div className="font-bold text-blue-500">Compare models instantly</div>
-              <div className={`text-xs mt-1 ${theme.muted}`}>Side-by-side table view</div>
+              <div className="font-bold text-blue-500">
+  {lang === "zh" ? "即时对比模型" : "Compare models instantly"}
+</div>
+<div className={`text-xs mt-1 ${theme.muted}`}>
+  {lang === "zh" ? "并排表格视图" : "Side-by-side table view"}
+</div>
             </div>
             <div className="text-center p-3">
               <div className="text-2xl mb-2">🎯</div>
-              <div className="font-bold text-purple-500">Find the best provider</div>
-              <div className={`text-xs mt-1 ${theme.muted}`}>OpenAI, Anthropic, Google & more</div>
+              <div className="font-bold text-purple-500">
+  {lang === "zh" ? "找到最佳提供商" : "Find the best provider"}
+</div>
+<div className={`text-xs mt-1 ${theme.muted}`}>
+  {lang === "zh" ? "OpenAI, Anthropic, Google 等" : "OpenAI, Anthropic, Google & more"}
+</div>
             </div>
             <div className="text-center p-3">
               <div className="text-2xl mb-2">📊</div>
-              <div className="font-bold text-orange-500">Real-time insights</div>
-              <div className={`text-xs mt-1 ${theme.muted}`}>Price trends & cost calculator</div>
+              <div className="font-bold text-orange-500">
+  {lang === "zh" ? "实时洞察" : "Real-time insights"}
+</div>
+<div className={`text-xs mt-1 ${theme.muted}`}>
+  {lang === "zh" ? "价格趋势与成本计算器" : "Price trends & cost calculator"}
+</div>
             </div>
           </div>
 
