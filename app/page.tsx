@@ -981,7 +981,7 @@ function getUseCaseEn(modelName: string): string {
     "Whisper": "Speech to text",
     "TTS HD": "High quality voice",
     "ElevenLabs": "Natural voice",
-  };
+    };
   return map[modelName] || modelName;
 }
   
