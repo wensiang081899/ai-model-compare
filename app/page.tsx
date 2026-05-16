@@ -34,7 +34,12 @@ type LiveModel = Model & {
   outputChangePct: number;
 };
 
-type UseCaseFilter = "all" | "coding" | "long-context" | "value" | "fast";
+type UseCaseFilter =
+  | "all"
+  | "coding"
+  | "long-context"
+  | "value"
+  | "fast";
 
 const translations = {
   zh: {
@@ -415,13 +420,24 @@ function matchesUseCaseFilter(model: Model, filter: UseCaseFilter): boolean {
   const uc = model.useCase.toLowerCase();
   switch (filter) {
     case "coding":
-      return uc.includes("coding") || uc.includes("编程") || model.useCase.includes("Coding");
+      return (
+        uc.includes("coding") ||
+        uc.includes("编程") ||
+        model.useCase.includes("Coding")
+      );
     case "long-context":
-      return uc.includes("长上下文") || parseContextToTokens(model.context) >= 200000;
+      return (
+        uc.includes("长上下文") ||
+        parseContextToTokens(model.context) >= 200_000
+      );
     case "value":
       return uc.includes("性价比");
     case "fast":
-      return model.speed === "Very Fast" || model.speed === "Fast" || uc.includes("快速");
+      return (
+        model.speed === "Very Fast" ||
+        model.speed === "Fast" ||
+        uc.includes("快速")
+      );
     default:
       return true;
   }
@@ -435,14 +451,32 @@ function monthlyCost(
   return half * model.inputPrice + half * model.outputPrice;
 }
 
-function PriceTrendBadge({ trend, pct }: { trend: PriceTrend; pct: number }) {
+function PriceTrendBadge({
+  trend,
+  pct,
+}: {
+  trend: PriceTrend;
+  pct: number;
+}) {
   if (trend === "down") {
-    return <span className="ml-1 text-xs text-green-500 font-medium whitespace-nowrap">↓{pct}%</span>;
+    return (
+      <span className="ml-1 text-xs text-green-500 font-medium whitespace-nowrap">
+        ↓{pct}%
+      </span>
+    );
   }
   if (trend === "up") {
-    return <span className="ml-1 text-xs text-red-500 font-medium whitespace-nowrap">↑{pct}%</span>;
+    return (
+      <span className="ml-1 text-xs text-red-500 font-medium whitespace-nowrap">
+        ↑{pct}%
+      </span>
+    );
   }
-  return <span className="ml-1 text-xs text-gray-500 font-medium whitespace-nowrap">-</span>;
+  return (
+    <span className="ml-1 text-xs text-gray-500 font-medium whitespace-nowrap">
+      -
+    </span>
+  );
 }
 
 function formatPrice(price: number): string {
@@ -471,7 +505,7 @@ export default function Home() {
       setCopiedName(name);
       setTimeout(() => setCopiedName(null), 2000);
     } catch {
-      // clipboard unavailable
+      /* clipboard unavailable */
     }
   }, []);
 
@@ -537,15 +571,18 @@ export default function Home() {
         cell: "text-gray-300",
         updateBanner: "bg-blue-500/10 border-blue-500/30 text-blue-300",
         btn: "bg-gray-800 hover:bg-gray-700 text-gray-300 border-gray-700",
-        btnPrimary: "bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-700",
+        btnPrimary:
+          "bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-700",
         footer: "text-gray-500",
         toggle: "bg-gray-800 hover:bg-gray-700 text-yellow-400",
         langToggle: "bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-700",
-        input: "bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-blue-500",
+        input:
+          "bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-blue-500",
         select: "bg-gray-800 border-gray-700 text-white focus:ring-blue-500",
         calcSection: "bg-gray-900 border-gray-800",
         calcHighlight: "bg-green-500/10 border-green-500/30",
-        refreshBtn: "bg-blue-600 hover:bg-blue-500 text-white border-blue-500",
+        refreshBtn:
+          "bg-blue-600 hover:bg-blue-500 text-white border-blue-500",
         muted: "text-gray-500",
       }
     : {
@@ -560,15 +597,18 @@ export default function Home() {
         cell: "text-gray-600",
         updateBanner: "bg-blue-50 border-blue-200 text-blue-700",
         btn: "bg-gray-100 hover:bg-gray-200 text-gray-600 border-gray-200",
-        btnPrimary: "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200",
+        btnPrimary:
+          "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200",
         footer: "text-gray-400",
         toggle: "bg-gray-100 hover:bg-gray-200 text-amber-500",
         langToggle: "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200",
-        input: "bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500",
+        input:
+          "bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500",
         select: "bg-white border-gray-300 text-gray-900 focus:ring-blue-500",
         calcSection: "bg-white border-gray-200 shadow-sm",
         calcHighlight: "bg-green-50 border-green-200",
-        refreshBtn: "bg-blue-600 hover:bg-blue-700 text-white border-blue-600",
+        refreshBtn:
+          "bg-blue-600 hover:bg-blue-700 text-white border-blue-600",
         muted: "text-gray-400",
       };
 
@@ -605,7 +645,9 @@ export default function Home() {
             </div>
           </div>
 
-          <div className={`mt-4 px-4 py-2.5 rounded-lg border text-sm ${theme.updateBanner}`}>
+          <div
+            className={`mt-4 px-4 py-2.5 rounded-lg border text-sm ${theme.updateBanner}`}
+          >
             {t.updateBannerPrefix}
             {updateDate}
             {t.updateBannerSuffix}
@@ -622,7 +664,9 @@ export default function Home() {
             </button>
             <span className={`text-sm ${theme.muted}`}>
               {t.lastRefresh}
-              {lastRefresh ? formatDateTime(lastRefresh, lang) : t.notRefreshed}
+              {lastRefresh
+                ? formatDateTime(lastRefresh, lang)
+                : t.notRefreshed}
             </span>
           </div>
         </div>
@@ -631,19 +675,27 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className={`rounded-lg p-4 border ${theme.card}`}>
-            <div className={`text-sm ${theme.cardLabel}`}>{t.statTotalModels}</div>
+            <div className={`text-sm ${theme.cardLabel}`}>
+              {t.statTotalModels}
+            </div>
             <div className="text-2xl font-bold">{liveModels.length}</div>
           </div>
           <div className={`rounded-lg p-4 border ${theme.card}`}>
-            <div className={`text-sm ${theme.cardLabel}`}>{t.statCheapestInput}</div>
-            <div className="text-2xl font-bold text-green-500">${formatPrice(minInput)}/M</div>
+            <div className={`text-sm ${theme.cardLabel}`}>
+              {t.statCheapestInput}
+            </div>
+            <div className="text-2xl font-bold text-green-500">
+              ${formatPrice(minInput)}/M
+            </div>
           </div>
           <div className={`rounded-lg p-4 border ${theme.card}`}>
             <div className={`text-sm ${theme.cardLabel}`}>{t.statFastest}</div>
             <div className="text-2xl font-bold text-blue-500">Groq</div>
           </div>
           <div className={`rounded-lg p-4 border ${theme.card}`}>
-            <div className={`text-sm ${theme.cardLabel}`}>{t.statLongestContext}</div>
+            <div className={`text-sm ${theme.cardLabel}`}>
+              {t.statLongestContext}
+            </div>
             <div className="text-2xl font-bold text-purple-500">2M</div>
           </div>
         </div>
@@ -655,7 +707,9 @@ export default function Home() {
           </div>
           <div className="flex flex-wrap items-end gap-4 mb-6">
             <label className="flex flex-col gap-1.5">
-              <span className={`text-sm ${theme.cardLabel}`}>{t.monthlyUsage}</span>
+              <span className={`text-sm ${theme.cardLabel}`}>
+                {t.monthlyUsage}
+              </span>
               <input
                 type="number"
                 min="0"
@@ -671,16 +725,26 @@ export default function Home() {
 
           {usageM > 0 && top3Cheapest.length > 0 && (
             <div className="mb-6">
-              <h3 className={`text-sm font-medium mb-3 ${theme.cardLabel}`}>{t.cheapestTop3}</h3>
+              <h3 className={`text-sm font-medium mb-3 ${theme.cardLabel}`}>
+                {t.cheapestTop3}
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {top3Cheapest.map((item, idx) => (
-                  <div key={item.name} className={`rounded-lg border p-4 ${theme.calcHighlight}`}>
+                  <div
+                    key={item.name}
+                    className={`rounded-lg border p-4 ${theme.calcHighlight}`}
+                  >
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg font-bold text-green-500">#{idx + 1}</span>
+                      <span className="text-lg font-bold text-green-500">
+                        #{idx + 1}
+                      </span>
                       <span className="font-semibold">{item.name}</span>
                     </div>
                     <p className={`text-xs ${theme.muted}`}>{item.provider}</p>
-                    <p className="text-xl font-bold text-green-500 mt-2">${item.cost.toFixed(2)}{t.perMonth}</p>
+                    <p className="text-xl font-bold text-green-500 mt-2">
+                      ${item.cost.toFixed(2)}
+                      {t.perMonth}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -694,15 +758,21 @@ export default function Home() {
                   <tr className={`border-b ${theme.thead}`}>
                     <th className="text-left py-2 px-2">{t.calcModel}</th>
                     <th className="text-left py-2 px-2">{t.calcProvider}</th>
-                    <th className="text-right py-2 px-2">{t.calcMonthlyCost}</th>
-                   </tr>
+                    <th className="text-right py-2 px-2">
+                      {t.calcMonthlyCost}
+                    </th>
+                  </tr>
                 </thead>
                 <tbody>
                   {costRankings.map((item) => (
                     <tr key={item.name} className={`border-b ${theme.row}`}>
                       <td className="py-2 px-2 font-medium">{item.name}</td>
-                      <td className={`py-2 px-2 ${theme.cell}`}>{item.provider}</td>
-                      <td className="py-2 px-2 text-right text-blue-500 font-medium">${item.cost.toFixed(2)}</td>
+                      <td className={`py-2 px-2 ${theme.cell}`}>
+                        {item.provider}
+                      </td>
+                      <td className="py-2 px-2 text-right text-blue-500 font-medium">
+                        ${item.cost.toFixed(2)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -713,7 +783,10 @@ export default function Home() {
 
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <div className="relative flex-1">
-            <Search size={18} className={`absolute left-3 top-1/2 -translate-y-1/2 ${theme.muted}`} />
+            <Search
+              size={18}
+              className={`absolute left-3 top-1/2 -translate-y-1/2 ${theme.muted}`}
+            />
             <input
               type="text"
               value={searchQuery}
@@ -724,7 +797,9 @@ export default function Home() {
           </div>
           <select
             value={useCaseFilter}
-            onChange={(e) => setUseCaseFilter(e.target.value as UseCaseFilter)}
+            onChange={(e) =>
+              setUseCaseFilter(e.target.value as UseCaseFilter)
+            }
             className={`sm:w-52 px-3 py-2.5 rounded-lg border focus:outline-none focus:ring-2 ${theme.select}`}
             aria-label={t.filterAria}
           >
@@ -736,7 +811,9 @@ export default function Home() {
           </select>
         </div>
 
-        <p className={`text-sm mb-3 ${theme.muted}`}>{t.showingModels(filteredModels.length, liveModels.length)}</p>
+        <p className={`text-sm mb-3 ${theme.muted}`}>
+          {t.showingModels(filteredModels.length, liveModels.length)}
+        </p>
 
         <div className={`rounded-xl border overflow-hidden ${theme.table}`}>
           <div className="overflow-x-auto">
@@ -757,13 +834,19 @@ export default function Home() {
               <tbody>
                 {filteredModels.length === 0 ? (
                   <tr>
-                    <td colSpan={9} className={`px-4 py-8 text-center ${theme.muted}`}>
+                    <td
+                      colSpan={9}
+                      className={`px-4 py-8 text-center ${theme.muted}`}
+                    >
                       {t.noResults}
                     </td>
                   </tr>
                 ) : (
                   filteredModels.map((model) => (
-                    <tr key={model.name} className={`border-b transition ${theme.row}`}>
+                    <tr
+                      key={model.name}
+                      className={`border-b transition ${theme.row}`}
+                    >
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="font-medium">{model.name}</span>
@@ -787,33 +870,49 @@ export default function Home() {
                           </button>
                         </div>
                       </td>
-                      <td className={`px-4 py-3 ${theme.cell}`}>{model.provider}</td>
+                      <td className={`px-4 py-3 ${theme.cell}`}>
+                        {model.provider}
+                      </td>
                       <td className="px-4 py-3 text-green-500">
                         <div className="inline-flex items-center flex-wrap">
                           <span>${formatPrice(model.inputPrice)}</span>
-                          <PriceTrendBadge trend={model.inputTrend} pct={model.inputChangePct} />
+                          <PriceTrendBadge
+                            trend={model.inputTrend}
+                            pct={model.inputChangePct}
+                          />
                         </div>
                       </td>
                       <td className="px-4 py-3 text-yellow-500">
                         <div className="inline-flex items-center flex-wrap">
                           <span>${formatPrice(model.outputPrice)}</span>
-                          <PriceTrendBadge trend={model.outputTrend} pct={model.outputChangePct} />
+                          <PriceTrendBadge
+                            trend={model.outputTrend}
+                            pct={model.outputChangePct}
+                          />
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-blue-500">${formatPrice(getBlendedPrice(model))}</td>
-                      <td className={`px-4 py-3 ${theme.cell}`}>{model.context}</td>
+                      <td className="px-4 py-3 text-blue-500">
+                        ${formatPrice(getBlendedPrice(model))}
+                      </td>
+                      <td className={`px-4 py-3 ${theme.cell}`}>
+                        {model.context}
+                      </td>
                       <td className="px-4 py-3">
-                        <span className={`px-2 py-1 rounded text-xs ${
-                          model.speed === "Very Fast"
-                            ? "bg-green-500/20 text-green-500"
-                            : model.speed === "Fast"
-                            ? "bg-blue-500/20 text-blue-500"
-                            : "bg-yellow-500/20 text-yellow-500"
-                        }`}>
+                        <span
+                          className={`px-2 py-1 rounded text-xs ${
+                            model.speed === "Very Fast"
+                              ? "bg-green-500/20 text-green-500"
+                              : model.speed === "Fast"
+                                ? "bg-blue-500/20 text-blue-500"
+                                : "bg-yellow-500/20 text-yellow-500"
+                          }`}
+                        >
                           {model.speed}
                         </span>
                       </td>
-                      <td className={`px-4 py-3 ${theme.cell}`}>{model.useCase}</td>
+                      <td className={`px-4 py-3 ${theme.cell}`}>
+                        {model.useCase}
+                      </td>
                       <td className="px-4 py-3">
                         <a
                           href={model.officialUrl}
@@ -836,7 +935,8 @@ export default function Home() {
         <div className={`mt-6 text-center text-xs ${theme.footer}`}>
           {t.footerPriceUnit} · {t.footerUpdated}
           {updateDate}
-          {lastRefresh && ` · ${t.footerSimRefresh}${formatDateTime(lastRefresh, lang)}`}
+          {lastRefresh &&
+            ` · ${t.footerSimRefresh}${formatDateTime(lastRefresh, lang)}`}
         </div>
       </main>
     </div>
