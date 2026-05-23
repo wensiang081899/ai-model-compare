@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 
 type Lang = "zh" | "en";
-type BuildType = "coding" | "chatbot" | "agent" | "writing" | "automation" | "longcontext";
+type BuildType = "saas" | "chatbot" | "agent" | "longpdf" | "realtime" | "budget";
 
 type ModelCategory = "all" | "text" | "image" | "embedding" | "audio";
 
@@ -44,23 +44,29 @@ type UseCaseFilter = "all" | "coding" | "long-context" | "value" | "fast";
 
 const translations = {
   zh: {
-    tagline: "帮你找到最适合的 AI 模型",
+    tagline: "Stop overpaying for AI.",
     whatBuilding: "你在构建什么？",
     monthlyBudget: "每月预算",
-    ourRecommendation: "🎯 我们的推荐",
-    estimatedMonthlyCost: "预计月成本",
-    useViaInferly: "🚀 通过 Inferly 使用",
-    showDetails: "查看详细对比表格",
-    hideDetails: "收起表格",
-    coding: "AI Coding App",
-    chatbot: "AI Chatbot",
-    agent: "AI Agent",
-    writing: "Content Writing",
-    automation: "Cheap Automation",
-    longcontext: "Long Context Tasks",
-    bestPick: "🏆 最佳选择",
-    valuePick: "🥈 性价比之选",
-    fastestPick: "⚡ 最快响应",
+    yourAiStack: "🎯 你的 AI 技术栈",
+    layer: "层级",
+    recommendation: "推荐方案",
+    estCost: "预估月成本",
+    planning: "🧠 规划/推理",
+    coding: "💻 编程/代码",
+    fastTasks: "⚡ 快速任务",
+    longContext: "📄 长上下文",
+    totalEstCost: "总预估成本",
+    withinBudget: "在预算内",
+    exceedsBudget: "超出预算",
+    deployStack: "🚀 通过 Inferly 部署此技术栈",
+    budgetRemaining: "剩余预算",
+    stackDescription: "基于你的需求，我们为你推荐以下 AI 技术栈：",
+    scenarioSaaS: "🏗️ AI SaaS / 产品开发",
+    scenarioChatbot: "💬 AI 客服 / 聊天机器人",
+    scenarioAgent: "🤖 AI Agent / 自动化工作流",
+    scenarioLongPDF: "📄 长文档分析 / PDF 处理",
+    scenarioRealtime: "⚡ 实时对话 / 低延迟响应",
+    scenarioBudget: "💰 预算优先 / 成本优化",
     // 原有翻译
     subtitle: "智能模型价格对比",
     switchToLight: "切换到亮色模式",
@@ -115,44 +121,31 @@ const translations = {
     footerPriceUnit: "价格单位: 每 100 万 tokens",
     footerUpdated: "数据更新时间: ",
     footerSimRefresh: "模拟价格刷新: ",
-    // 推荐理由
-    reasonCodingBest: "编程能力最强，代码质量最高",
-    reasonCodingValue: "成本最低，适合大规模调用",
-    reasonCodingFast: "延迟最低，适合实时对话",
-    reasonChatbotBest: "对话能力最强，理解上下文好",
-    reasonChatbotValue: "成本低，响应快",
-    reasonChatbotFast: "速度最快，适合实时聊天",
-    reasonAgentBest: "函数调用最强，适合 Agent 开发",
-    reasonAgentValue: "成本低，适合大规模 Agent",
-    reasonAgentFast: "延迟最低，适合实时 Agent",
-    reasonWritingBest: "写作能力均衡，创意丰富",
-    reasonWritingValue: "成本低，适合大量写作",
-    reasonWritingFast: "快速生成，适合实时写作",
-    reasonAutoBest: "成本最低，适合自动化任务",
-    reasonAutoValue: "性价比高，稳定可靠",
-    reasonAutoFast: "响应快，适合实时自动化",
-    reasonLongBest: "上下文最长，200万 Token",
-    reasonLongValue: "性价比高，适合长文档",
-    reasonLongFast: "响应快，适合长文本处理",
   },
   en: {
-    tagline: "Find the best AI model for your needs",
+    tagline: "Stop overpaying for AI.",
     whatBuilding: "What are you building?",
     monthlyBudget: "Monthly budget",
-    ourRecommendation: "🎯 Our Recommendation",
-    estimatedMonthlyCost: "Estimated monthly cost",
-    useViaInferly: "🚀 Use via Inferly",
-    showDetails: "Show detailed comparison table",
-    hideDetails: "Hide table",
-    coding: "AI Coding App",
-    chatbot: "AI Chatbot",
-    agent: "AI Agent",
-    writing: "Content Writing",
-    automation: "Cheap Automation",
-    longcontext: "Long Context Tasks",
-    bestPick: "🏆 Best Pick",
-    valuePick: "🥈 Best Value",
-    fastestPick: "⚡ Fastest Response",
+    yourAiStack: "🎯 Your AI Stack",
+    layer: "Layer",
+    recommendation: "Recommendation",
+    estCost: "Est. Monthly Cost",
+    planning: "🧠 Planning/Reasoning",
+    coding: "💻 Coding",
+    fastTasks: "⚡ Fast Tasks",
+    longContext: "📄 Long Context",
+    totalEstCost: "Total Estimated Cost",
+    withinBudget: "within budget",
+    exceedsBudget: "exceeds budget",
+    deployStack: "🚀 Deploy this Stack via Inferly",
+    budgetRemaining: "Budget remaining",
+    stackDescription: "Based on your needs, we recommend this AI stack:",
+    scenarioSaaS: "🏗️ AI SaaS / Product Dev",
+    scenarioChatbot: "💬 AI Chatbot / Customer Service",
+    scenarioAgent: "🤖 AI Agent / Automation",
+    scenarioLongPDF: "📄 Long PDF / Document Analysis",
+    scenarioRealtime: "⚡ Real-time Chat / Low Latency",
+    scenarioBudget: "💰 Budget First / Cost Optimization",
     subtitle: "AI Model Price Comparison",
     switchToLight: "Switch to light mode",
     switchToDark: "Switch to dark mode",
@@ -206,28 +199,27 @@ const translations = {
     footerPriceUnit: "Prices per 1M tokens",
     footerUpdated: "Data updated: ",
     footerSimRefresh: "Simulated price refresh: ",
-    reasonCodingBest: "Strongest coding ability, highest quality",
-    reasonCodingValue: "Lowest cost, suitable for large scale",
-    reasonCodingFast: "Lowest latency, suitable for real-time",
-    reasonChatbotBest: "Best conversation, good context understanding",
-    reasonChatbotValue: "Low cost, fast response",
-    reasonChatbotFast: "Fastest speed for real-time chat",
-    reasonAgentBest: "Strongest function calling, best for Agent",
-    reasonAgentValue: "Low cost for large-scale Agent",
-    reasonAgentFast: "Lowest latency for real-time Agent",
-    reasonWritingBest: "Balanced writing, rich creativity",
-    reasonWritingValue: "Low cost for mass writing",
-    reasonWritingFast: "Fast generation for real-time writing",
-    reasonAutoBest: "Lowest cost for automation",
-    reasonAutoValue: "Good value, stable and reliable",
-    reasonAutoFast: "Fast response for real-time automation",
-    reasonLongBest: "Longest context, 2M tokens",
-    reasonLongValue: "Good value for long documents",
-    reasonLongFast: "Fast response for long text",
   },
 } as const;
 
-// 53个完整模型（保留原有所有模型）
+const USE_CASE_FILTER_LABELS: Record<Lang, { value: UseCaseFilter; labelKey: keyof (typeof translations)["zh"] }[]> = {
+  zh: [
+    { value: "all", labelKey: "filterAll" },
+    { value: "coding", labelKey: "filterCoding" },
+    { value: "long-context", labelKey: "filterLongContext" },
+    { value: "value", labelKey: "filterValue" },
+    { value: "fast", labelKey: "filterFast" },
+  ],
+  en: [
+    { value: "all", labelKey: "filterAll" },
+    { value: "coding", labelKey: "filterCoding" },
+    { value: "long-context", labelKey: "filterLongContext" },
+    { value: "value", labelKey: "filterValue" },
+    { value: "fast", labelKey: "filterFast" },
+  ],
+};
+
+// 53个完整模型
 const baseModels: Model[] = [
   { name: "GPT-5", provider: "OpenAI", inputPrice: 5.0, outputPrice: 15.0, context: "256K", speed: "Fast", useCase: "旗舰通用", officialUrl: "https://openai.com", category: "text" },
   { name: "GPT-4o", provider: "OpenAI", inputPrice: 2.5, outputPrice: 10.0, context: "128K", speed: "Fast", useCase: "通用/Coding", officialUrl: "https://openai.com", category: "text" },
@@ -283,23 +275,6 @@ const baseModels: Model[] = [
   { name: "TTS HD", provider: "OpenAI", inputPrice: 0.015, outputPrice: 0.015, context: "audio", speed: "Fast", useCase: "高质量语音", officialUrl: "https://openai.com", category: "audio" },
   { name: "ElevenLabs", provider: "ElevenLabs", inputPrice: 0.30, outputPrice: 0.30, context: "audio", speed: "Fast", useCase: "自然语音", officialUrl: "https://elevenlabs.io", category: "audio" },
 ];
-
-const USE_CASE_FILTER_LABELS: Record<Lang, { value: UseCaseFilter; labelKey: keyof (typeof translations)["zh"] }[]> = {
-  zh: [
-    { value: "all", labelKey: "filterAll" },
-    { value: "coding", labelKey: "filterCoding" },
-    { value: "long-context", labelKey: "filterLongContext" },
-    { value: "value", labelKey: "filterValue" },
-    { value: "fast", labelKey: "filterFast" },
-  ],
-  en: [
-    { value: "all", labelKey: "filterAll" },
-    { value: "coding", labelKey: "filterCoding" },
-    { value: "long-context", labelKey: "filterLongContext" },
-    { value: "value", labelKey: "filterValue" },
-    { value: "fast", labelKey: "filterFast" },
-  ],
-};
 
 const getBlendedPrice = (model: { inputPrice: number; outputPrice: number }) => (model.inputPrice + model.outputPrice) / 2;
 function formatToday(lang: Lang): string {
@@ -392,56 +367,73 @@ function getProviderEn(provider: string): string {
   return map[provider] || provider;
 }
 
-// 推荐引擎逻辑
-function getRecommendations(type: BuildType, lang: Lang) {
-  const t = translations[lang];
-  if (type === "coding") {
+// 根据构建类型获取 AI Stack 推荐
+function getStackRecommendations(type: BuildType, budget: number) {
+  // 基础成本计算（假设每月 10M tokens 使用量）
+  const monthlyVolume = 10;
+  
+  if (type === "saas") {
     return {
-      best: { name: "Claude 3.7 Sonnet", provider: "Anthropic", costPerMTok: 3.0, reason: t.reasonCodingBest },
-      value: { name: "DeepSeek V3", provider: "DeepSeek", costPerMTok: 0.14, reason: t.reasonCodingValue },
-      fast: { name: "Gemini 1.5 Flash", provider: "Google", costPerMTok: 0.075, reason: t.reasonCodingFast },
+      layers: [
+        { name: "planning", model: "GPT-4o", provider: "OpenAI", costPerMTok: 2.5, monthlyCost: 2.5 * monthlyVolume / 2 },
+        { name: "coding", model: "Claude 3.7 Sonnet", provider: "Anthropic", costPerMTok: 3.0, monthlyCost: 3.0 * monthlyVolume / 2 },
+        { name: "fastTasks", model: "Gemini 1.5 Flash", provider: "Google", costPerMTok: 0.075, monthlyCost: 0.075 * monthlyVolume / 2 },
+        { name: "longContext", model: "Gemini 1.5 Pro", provider: "Google", costPerMTok: 1.25, monthlyCost: 1.25 * monthlyVolume / 2 },
+      ],
     };
   } else if (type === "chatbot") {
     return {
-      best: { name: "GPT-4o", provider: "OpenAI", costPerMTok: 2.5, reason: t.reasonChatbotBest },
-      value: { name: "GPT-4o mini", provider: "OpenAI", costPerMTok: 0.15, reason: t.reasonChatbotValue },
-      fast: { name: "Claude 3 Haiku", provider: "Anthropic", costPerMTok: 0.25, reason: t.reasonChatbotFast },
+      layers: [
+        { name: "planning", model: "GPT-4o mini", provider: "OpenAI", costPerMTok: 0.15, monthlyCost: 0.15 * monthlyVolume / 2 },
+        { name: "coding", model: "Claude 3 Haiku", provider: "Anthropic", costPerMTok: 0.25, monthlyCost: 0.25 * monthlyVolume / 2 },
+        { name: "fastTasks", model: "Gemini 1.5 Flash", provider: "Google", costPerMTok: 0.075, monthlyCost: 0.075 * monthlyVolume / 2 },
+        { name: "longContext", model: "DeepSeek V3", provider: "DeepSeek", costPerMTok: 0.14, monthlyCost: 0.14 * monthlyVolume / 2 },
+      ],
     };
   } else if (type === "agent") {
     return {
-      best: { name: "GPT-4o", provider: "OpenAI", costPerMTok: 2.5, reason: t.reasonAgentBest },
-      value: { name: "DeepSeek V3", provider: "DeepSeek", costPerMTok: 0.14, reason: t.reasonAgentValue },
-      fast: { name: "Llama 3.3 70B", provider: "Groq", costPerMTok: 0.7, reason: t.reasonAgentFast },
+      layers: [
+        { name: "planning", model: "GPT-4o", provider: "OpenAI", costPerMTok: 2.5, monthlyCost: 2.5 * monthlyVolume / 2 },
+        { name: "coding", model: "Claude 3.7 Sonnet", provider: "Anthropic", costPerMTok: 3.0, monthlyCost: 3.0 * monthlyVolume / 2 },
+        { name: "fastTasks", model: "Llama 3.3 70B", provider: "Groq", costPerMTok: 0.7, monthlyCost: 0.7 * monthlyVolume / 2 },
+        { name: "longContext", model: "Gemini 1.5 Pro", provider: "Google", costPerMTok: 1.25, monthlyCost: 1.25 * monthlyVolume / 2 },
+      ],
     };
-  } else if (type === "writing") {
+  } else if (type === "longpdf") {
     return {
-      best: { name: "GPT-4o", provider: "OpenAI", costPerMTok: 2.5, reason: t.reasonWritingBest },
-      value: { name: "Claude 3 Haiku", provider: "Anthropic", costPerMTok: 0.25, reason: t.reasonWritingValue },
-      fast: { name: "Gemini 1.5 Flash", provider: "Google", costPerMTok: 0.075, reason: t.reasonWritingFast },
+      layers: [
+        { name: "planning", model: "Gemini 1.5 Pro", provider: "Google", costPerMTok: 1.25, monthlyCost: 1.25 * monthlyVolume / 2 },
+        { name: "coding", model: "Claude 3.5 Sonnet", provider: "Anthropic", costPerMTok: 3.0, monthlyCost: 3.0 * monthlyVolume / 2 },
+        { name: "fastTasks", model: "DeepSeek V3", provider: "DeepSeek", costPerMTok: 0.14, monthlyCost: 0.14 * monthlyVolume / 2 },
+        { name: "longContext", model: "Gemini 1.5 Pro", provider: "Google", costPerMTok: 1.25, monthlyCost: 1.25 * monthlyVolume / 2 },
+      ],
     };
-  } else if (type === "automation") {
+  } else if (type === "realtime") {
     return {
-      best: { name: "DeepSeek V3", provider: "DeepSeek", costPerMTok: 0.14, reason: t.reasonAutoBest },
-      value: { name: "GPT-4o mini", provider: "OpenAI", costPerMTok: 0.15, reason: t.reasonAutoValue },
-      fast: { name: "Gemini 1.5 Flash", provider: "Google", costPerMTok: 0.075, reason: t.reasonAutoFast },
+      layers: [
+        { name: "planning", model: "Gemini 1.5 Flash", provider: "Google", costPerMTok: 0.075, monthlyCost: 0.075 * monthlyVolume / 2 },
+        { name: "coding", model: "Claude 3 Haiku", provider: "Anthropic", costPerMTok: 0.25, monthlyCost: 0.25 * monthlyVolume / 2 },
+        { name: "fastTasks", model: "Groq (Llama 3.3 70B)", provider: "Groq", costPerMTok: 0.7, monthlyCost: 0.7 * monthlyVolume / 2 },
+        { name: "longContext", model: "Gemini 1.5 Flash", provider: "Google", costPerMTok: 0.075, monthlyCost: 0.075 * monthlyVolume / 2 },
+      ],
     };
   } else {
     return {
-      best: { name: "Gemini 1.5 Pro", provider: "Google", costPerMTok: 1.25, reason: t.reasonLongBest },
-      value: { name: "Claude 3.7 Sonnet", provider: "Anthropic", costPerMTok: 3.0, reason: t.reasonLongValue },
-      fast: { name: "Gemini 1.5 Flash", provider: "Google", costPerMTok: 0.075, reason: t.reasonLongFast },
+      layers: [
+        { name: "planning", model: "DeepSeek V3", provider: "DeepSeek", costPerMTok: 0.14, monthlyCost: 0.14 * monthlyVolume / 2 },
+        { name: "coding", model: "DeepSeek V3", provider: "DeepSeek", costPerMTok: 0.14, monthlyCost: 0.14 * monthlyVolume / 2 },
+        { name: "fastTasks", model: "Gemini 1.5 Flash", provider: "Google", costPerMTok: 0.075, monthlyCost: 0.075 * monthlyVolume / 2 },
+        { name: "longContext", model: "DeepSeek V3", provider: "DeepSeek", costPerMTok: 0.14, monthlyCost: 0.14 * monthlyVolume / 2 },
+      ],
     };
   }
 }
 
-function calcMonthlyCost(costPerMTok: number, monthlyMillionTokens: number = 10): number {
-  return costPerMTok * monthlyMillionTokens;
-}
-
 export default function Home() {
   const [lang, setLang] = useState<Lang>("zh");
-  const [buildType, setBuildType] = useState<BuildType>("coding");
-  const [showReco, setShowReco] = useState(true);
+  const [buildType, setBuildType] = useState<BuildType>("saas");
+  const [budget, setBudget] = useState<number>(50);
+  const [showStackBuilder, setShowStackBuilder] = useState(true);
   const [isDark, setIsDark] = useState(true);
   const [copiedName, setCopiedName] = useState<string | null>(null);
   const [liveModels, setLiveModels] = useState<LiveModel[]>(() => baseModels.map(seedInitialTrends));
@@ -453,14 +445,17 @@ export default function Home() {
 
   const t = translations[lang];
   const updateDate = formatToday(lang);
-  const recommendations = getRecommendations(buildType, lang);
+  const stackRec = getStackRecommendations(buildType, budget);
+  const totalStackCost = stackRec.layers.reduce((sum, layer) => sum + layer.monthlyCost, 0);
+  const isWithinBudget = totalStackCost <= budget;
+  
   const buildOptions: { id: BuildType; label: string; icon: string }[] = [
-    { id: "coding", label: t.coding, icon: "💻" },
-    { id: "chatbot", label: t.chatbot, icon: "💬" },
-    { id: "agent", label: t.agent, icon: "🤖" },
-    { id: "writing", label: t.writing, icon: "✍️" },
-    { id: "automation", label: t.automation, icon: "⚙️" },
-    { id: "longcontext", label: t.longcontext, icon: "📚" },
+    { id: "saas", label: t.scenarioSaaS, icon: "🏗️" },
+    { id: "chatbot", label: t.scenarioChatbot, icon: "💬" },
+    { id: "agent", label: t.scenarioAgent, icon: "🤖" },
+    { id: "longpdf", label: t.scenarioLongPDF, icon: "📄" },
+    { id: "realtime", label: t.scenarioRealtime, icon: "⚡" },
+    { id: "budget", label: t.scenarioBudget, icon: "💰" },
   ];
 
   const copyModelName = useCallback(async (name: string) => {
@@ -552,25 +547,38 @@ export default function Home() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* 推荐引擎区块 - 新增 */}
+        {/* AI Stack Builder - 新增核心功能 */}
         <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
-          <h2 className="text-xl font-semibold mb-2 text-center">{t.whatBuilding}</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-6 mb-8">
-            {buildOptions.map(opt => (
-              <button key={opt.id} onClick={() => setBuildType(opt.id)} className={`px-3 py-3 rounded-xl border transition-all ${buildType === opt.id ? "bg-blue-600 border-blue-600 text-white" : `${theme.cardBg} ${theme.cardBorder} ${theme.row}`}`}><div className="text-2xl mb-1">{opt.icon}</div><div className="text-sm font-medium">{opt.label}</div></button>
-            ))}
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold">{t.whatBuilding}</h2>
+            <button onClick={() => setShowStackBuilder(!showStackBuilder)} className={`inline-flex items-center gap-1 px-3 py-1 rounded-lg text-sm ${theme.btnSecondary}`}>{showStackBuilder ? <ChevronUp size={16} /> : <ChevronDown size={16} />}{showStackBuilder ? "收起" : "展开"}</button>
           </div>
           
-          <h2 className="text-xl font-semibold mb-6 text-center">{t.ourRecommendation}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className={`p-5 rounded-xl border ${theme.calcHighlight}`}><div className="flex items-center gap-2 mb-2"><span className="text-3xl">🏆</span><span className="font-bold text-green-500">{t.bestPick}</span></div><div className="text-xl font-bold">{recommendations.best.name}</div><div className={`text-sm ${theme.muted} mb-2`}>{recommendations.best.provider}</div><p className={`text-sm ${theme.muted} mb-3`}>{recommendations.best.reason}</p><div className="text-sm mb-4"><span className={theme.muted}>{t.estimatedMonthlyCost}: </span><span className="font-bold text-green-500">~${calcMonthlyCost(recommendations.best.costPerMTok)}/month</span></div><a href="https://runpod.io?ref=69zpi5j4" target="_blank" rel="noopener noreferrer" className={`block text-center px-4 py-2 rounded-lg text-sm font-medium ${theme.btnPrimary}`}>{t.useViaInferly}</a></div>
-            <div className={`p-5 rounded-xl border ${theme.cardBg} ${theme.cardBorder}`}><div className="flex items-center gap-2 mb-2"><span className="text-3xl">🥈</span><span className="font-bold text-blue-500">{t.valuePick}</span></div><div className="text-xl font-bold">{recommendations.value.name}</div><div className={`text-sm ${theme.muted} mb-2`}>{recommendations.value.provider}</div><p className={`text-sm ${theme.muted} mb-3`}>{recommendations.value.reason}</p><div className="text-sm mb-4"><span className={theme.muted}>{t.estimatedMonthlyCost}: </span><span className="font-bold text-green-500">~${calcMonthlyCost(recommendations.value.costPerMTok)}/month</span></div><a href="https://runpod.io?ref=69zpi5j4" target="_blank" rel="noopener noreferrer" className={`block text-center px-4 py-2 rounded-lg text-sm font-medium ${theme.btnSecondary}`}>{t.useViaInferly}</a></div>
-            <div className={`p-5 rounded-xl border ${theme.cardBg} ${theme.cardBorder}`}><div className="flex items-center gap-2 mb-2"><span className="text-3xl">⚡</span><span className="font-bold text-purple-500">{t.fastestPick}</span></div><div className="text-xl font-bold">{recommendations.fast.name}</div><div className={`text-sm ${theme.muted} mb-2`}>{recommendations.fast.provider}</div><p className={`text-sm ${theme.muted} mb-3`}>{recommendations.fast.reason}</p><div className="text-sm mb-4"><span className={theme.muted}>{t.estimatedMonthlyCost}: </span><span className="font-bold text-green-500">~${calcMonthlyCost(recommendations.fast.costPerMTok)}/month</span></div><a href="https://runpod.io?ref=69zpi5j4" target="_blank" rel="noopener noreferrer" className={`block text-center px-4 py-2 rounded-lg text-sm font-medium ${theme.btnSecondary}`}>{t.useViaInferly}</a></div>
-          </div>
-          <div className="text-center mt-6"><button onClick={() => setShowReco(!showReco)} className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm ${theme.btnSecondary}`}>{showReco ? "↑ 收起推荐区" : "↓ 展开推荐区"} {showReco ? <ChevronUp size={16} /> : <ChevronDown size={16} />}</button></div>
+          {showStackBuilder && (
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
+                {buildOptions.map(opt => (
+                  <button key={opt.id} onClick={() => setBuildType(opt.id)} className={`px-3 py-3 rounded-xl border transition-all ${buildType === opt.id ? "bg-blue-600 border-blue-600 text-white" : `${theme.cardBg} ${theme.cardBorder} ${theme.row}`}`}>
+                    <div className="text-2xl mb-1">{opt.icon}</div><div className="text-sm font-medium">{opt.label}</div>
+                  </button>
+                ))}
+              </div>
+              
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div className="flex-1 max-w-md"><div className="flex justify-between mb-2"><span className={`text-sm ${theme.muted}`}>{t.monthlyBudget}</span><span className="text-lg font-bold text-green-500">${budget}</span></div><input type="range" min="0" max="200" step="10" value={budget} onChange={(e) => setBudget(parseInt(e.target.value))} className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer" /><div className="flex justify-between text-xs text-gray-500 mt-1"><span>$0</span><span>$50</span><span>$100</span><span>$150</span><span>$200</span></div></div>
+                <div className={`px-4 py-2 rounded-lg ${isWithinBudget ? "bg-green-500/20 text-green-500 border border-green-500/30" : "bg-red-500/20 text-red-500 border border-red-500/30"}`}><span className="font-medium">{t.totalEstCost}: ${totalStackCost.toFixed(2)}/月</span><span className="ml-2 text-sm">{isWithinBudget ? `✅ ${t.withinBudget}` : `⚠️ ${t.exceedsBudget}`}</span></div>
+              </div>
+              
+              <div className="mb-4"><p className={`text-sm ${theme.muted} mb-3`}>{t.stackDescription}</p></div>
+              
+              <div className="overflow-x-auto mb-6"><table className="w-full"><thead className={`border-b ${theme.thead}`}><tr><th className="text-left py-3 px-3">{t.layer}</th><th className="text-left py-3 px-3">{t.recommendation}</th><th className="text-right py-3 px-3">{t.estCost}</th></tr></thead><tbody>{stackRec.layers.map((layer, idx) => (<tr key={idx} className={`border-b ${theme.row}`}><td className="py-3 px-3">{layer.name === "planning" ? t.planning : layer.name === "coding" ? t.coding : layer.name === "fastTasks" ? t.fastTasks : t.longContext}</td><td className="py-3 px-3"><div><span className="font-medium">{layer.model}</span><span className={`text-xs ml-2 ${theme.muted}`}>{layer.provider}</span></div></td><td className="py-3 px-3 text-right text-green-500 font-medium">${layer.monthlyCost.toFixed(2)}/月</td></tr>))}</tbody></table></div>
+              
+              <div className="flex items-center justify-between gap-4 p-4 rounded-lg bg-green-500/10 border border-green-500/30"><div><div className="font-semibold">{t.totalEstCost}: ${totalStackCost.toFixed(2)}/月</div><div className={`text-sm ${theme.muted}`}>{isWithinBudget ? `${t.budgetRemaining}: $${(budget - totalStackCost).toFixed(2)}` : `${t.exceedsBudget} by $${(totalStackCost - budget).toFixed(2)}`}</div></div><a href="https://runpod.io?ref=69zpi5j4" target="_blank" rel="noopener noreferrer" className={`px-5 py-2 rounded-lg font-medium text-sm ${theme.btnPrimary}`}>{t.deployStack}</a></div>
+            </>
+          )}
         </div>
 
-        {/* 统计卡片 */}
+        {/* 统计卡片 - 原有 */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className={`rounded-lg p-4 border ${theme.card}`}><div className={`text-sm ${theme.cardLabel}`}>{t.statTotalModels}</div><div className="text-2xl font-bold">{liveModels.length}</div></div>
           <div className={`rounded-lg p-4 border ${theme.card}`}><div className={`text-sm ${theme.cardLabel}`}>{t.statCheapestInput}</div><div className="text-2xl font-bold text-green-500">${formatPrice(minInput)}/M</div></div>
@@ -578,7 +586,7 @@ export default function Home() {
           <div className={`rounded-lg p-4 border ${theme.card}`}><div className={`text-sm ${theme.cardLabel}`}>{t.statLongestContext}</div><div className="text-2xl font-bold text-purple-500">2M</div></div>
         </div>
 
-        {/* Why Use Us */}
+        {/* Why Use Us - 原有 */}
         <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
           <h2 className="text-xl font-semibold mb-6 text-center">{lang === "zh" ? "为什么选择 Inferly？" : "Why Inferly?"}</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -589,7 +597,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 成本计算器 */}
+        {/* 成本计算器 - 原有 */}
         <div className={`rounded-xl border p-6 mb-8 ${theme.calcSection}`}>
           <div className="flex items-center gap-2 mb-4"><Calculator size={20} className="text-blue-500" /><h2 className="text-lg font-semibold">{t.costCalculator}</h2></div>
           <div className="flex flex-wrap items-end gap-4 mb-6"><label className="flex flex-col gap-1.5"><span className={`text-sm ${theme.cardLabel}`}>{t.monthlyUsage}</span><input type="number" min="0" step="0.1" value={monthlyUsageM} onChange={(e) => setMonthlyUsageM(e.target.value)} className={`w-48 px-3 py-2 rounded-lg border ${theme.input}`} placeholder={t.monthlyUsagePlaceholder} /></label><p className={`text-sm ${theme.muted} pb-2`}>{t.costEstimateHint}</p></div>
@@ -597,7 +605,7 @@ export default function Home() {
           {usageM > 0 && (<div className="overflow-x-auto"><table className="w-full text-sm"><thead><tr className={`border-b ${theme.thead}`}><th className="text-left py-2 px-2">{t.calcModel}</th><th className="text-left py-2 px-2">{t.calcProvider}</th><th className="text-right py-2 px-2">{t.calcMonthlyCost}</th></tr></thead><tbody>{costRankings.map((item) => (<tr key={item.name} className={`border-b ${theme.row}`}><td className="py-2 px-2 font-medium">{item.name}</td><td className={`py-2 px-2 ${theme.cell}`}>{item.provider}</td><td className="py-2 px-2 text-right text-blue-500 font-medium">${item.cost.toFixed(2)}</td></tr>))}</tbody></table></div>)}
         </div>
 
-        {/* 搜索筛选 */}
+        {/* 搜索筛选 - 原有 */}
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <div className="relative flex-1"><Search size={18} className={`absolute left-3 top-1/2 -translate-y-1/2 ${theme.muted}`} /><input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder={t.searchPlaceholder} className={`w-full pl-10 pr-4 py-2.5 rounded-lg border ${theme.input}`} /></div>
           <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value as ModelCategory)} className={`sm:w-40 px-3 py-2.5 rounded-lg border ${theme.select}`}><option value="all">{t.categoryAll}</option><option value="text">{t.categoryText}</option><option value="image">{t.categoryImage}</option><option value="embedding">{t.categoryEmbedding}</option><option value="audio">{t.categoryAudio}</option></select>
@@ -605,7 +613,7 @@ export default function Home() {
         </div>
         <p className={`text-sm mb-3 ${theme.muted}`}>{t.showingModels(filteredModels.length, liveModels.length)}</p>
 
-        {/* 表格 */}
+        {/* 表格 - 原有 */}
         <div className={`rounded-xl border overflow-hidden ${theme.table}`}>
           <div className="overflow-x-auto"><table className="w-full"><thead className={`border-b ${theme.thead}`}><tr className="text-left text-sm"><th className="px-4 py-3">{t.thModel}</th><th className="px-4 py-3">{t.thProvider}</th><th className="px-4 py-3">{t.thInput}</th><th className="px-4 py-3">{t.thOutput}</th><th className="px-4 py-3">{t.thBlended}</th><th className="px-4 py-3">{t.thContext}</th><th className="px-4 py-3">{t.thSpeed}</th><th className="px-4 py-3">{t.thUseCase}</th><th className="px-4 py-3">{t.thActions}</th><th className="px-4 py-3">🚀 推广</th></tr></thead><tbody>{filteredModels.length === 0 ? (<tr><td colSpan={10} className={`px-4 py-8 text-center ${theme.muted}`}>{t.noResults}</td></tr>) : (filteredModels.map((model) => (<tr key={model.name} className={`border-b transition ${theme.row}`}><td className="px-4 py-3"><div className="flex items-center gap-2 flex-wrap"><span className="font-medium">{model.name}</span><button onClick={() => copyModelName(model.name)} className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs border ${theme.btn}`}>{copiedName === model.name ? (<><Check size={12} className="text-green-500" />{t.copied}</>) : (<><Copy size={12} />{t.copyName}</>)}</button></div></td><td className={`px-4 py-3 ${theme.cell}`}>{lang === "zh" ? model.provider : getProviderEn(model.provider)}</td><td className="px-4 py-3 text-green-500"><div className="inline-flex items-center flex-wrap"><span>${formatPrice(model.inputPrice)}</span><PriceTrendBadge trend={model.inputTrend} pct={model.inputChangePct} /></div></td><td className="px-4 py-3 text-yellow-500"><div className="inline-flex items-center flex-wrap"><span>${formatPrice(model.outputPrice)}</span><PriceTrendBadge trend={model.outputTrend} pct={model.outputChangePct} /></div></td><td className="px-4 py-3 text-blue-500">${formatPrice(getBlendedPrice(model))}</td><td className={`px-4 py-3 ${theme.cell}`}>{model.context}</td><td className="px-4 py-3"><span className={`px-2 py-1 rounded text-xs ${model.speed === "Very Fast" ? "bg-green-500/20 text-green-500" : model.speed === "Fast" ? "bg-blue-500/20 text-blue-500" : "bg-yellow-500/20 text-yellow-500"}`}>{model.speed}</span></td><td className={`px-4 py-3 ${theme.cell}`}>{lang === "zh" ? model.useCase : getUseCaseEn(model.name)}</td><td className="px-4 py-3"><a href={model.officialUrl} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs border ${theme.btnPrimary}`}><ExternalLink size={12} />{t.officialSite}</a></td><td className="px-4 py-3"><a href="https://runpod.io?ref=69zpi5j4" target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs border ${theme.btnPrimary}`}>🚀 RunPod</a></td></tr>)))}</tbody></table></div>
         </div>
