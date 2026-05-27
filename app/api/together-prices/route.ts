@@ -16,27 +16,30 @@ export async function GET() {
     
     const data = await response.json();
     
-    // 提取我们关心的模型价格
+    // 临时：把所有模型名称打印出来，方便调试
+    const modelNames: string[] = [];
     const prices: Record<string, { inputPrice: number; outputPrice: number }> = {};
     
     if (data.data) {
       for (const model of data.data) {
-        const name = model.name;
+        modelNames.push(model.name);  // 收集所有模型名称
         const inputPrice = model.pricing?.input || 0;
         const outputPrice = model.pricing?.output || 0;
         
-        // 匹配我们表格中的模型
-        if (name.includes('Llama-3.3-70B') || name.includes('llama-3.3-70b')) {
+        // 使用更灵活的匹配规则
+        const nameLower = model.name.toLowerCase();
+        if (nameLower.includes('llama-3.3-70b')) {
           prices['Llama 3.3 70B'] = { inputPrice, outputPrice };
-        } else if (name.includes('DeepSeek-V3') || name.includes('deepseek-v3')) {
+        } else if (nameLower.includes('deepseek-v3') || nameLower.includes('deepseek-v3')) {
           prices['DeepSeek V3'] = { inputPrice, outputPrice };
-        } else if (name.includes('Mixtral-8x22B')) {
+        } else if (nameLower.includes('mixtral-8x22b')) {
           prices['Mixtral 8x22B'] = { inputPrice, outputPrice };
         }
       }
     }
     
-    return NextResponse.json({ prices });
+    // 返回价格，同时附带所有模型名称用于调试
+    return NextResponse.json({ prices, allModelNames: modelNames });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch prices' }, { status: 500 });
   }
